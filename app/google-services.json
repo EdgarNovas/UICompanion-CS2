@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "976434412183",
+    "project_id": "cscompanion-ba26b",
+    "storage_bucket": "cscompanion-ba26b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976434412183:android:4753578caaca78a35587d2",
+        "android_client_info": {
+          "package_name": "com.example.apirest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE-FNExXCjFi6zIbaeXBG3HqbIS2nZVg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
