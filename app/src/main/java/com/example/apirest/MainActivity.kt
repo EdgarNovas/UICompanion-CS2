@@ -11,8 +11,10 @@ import java.security.MessageDigest
 import MarvelApi.MarvelApiCall
 import MarvelApi.MarvelResponse
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Configuration
 import android.util.Log
+import android.view.MotionEvent
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import retrofit2.Call
@@ -34,6 +36,16 @@ class MainActivity : AppCompatActivity() {
 
         analytics.logEvent("MyFirstEvent", bundle)
 
+
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if(event?.action == MotionEvent.ACTION_DOWN){
+            val intent = Intent(this, LoadingScreen::class.java)
+            startActivity(intent)
+
+        }
+        return super.onTouchEvent(event)
 
     }
 

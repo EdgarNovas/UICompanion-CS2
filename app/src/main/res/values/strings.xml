@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">APIRest</string>
+    <string name="tapcontinue">Tap To Continue</string>
 </resources>
