@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/character"
+        android:title="Profile" />
+    <item
+        android:id="@+id/nav_weapons"
+        android:icon="@drawable/gun"
+        android:title="Weapons" />
+    <item
+        android:id="@+id/nav_characters"
+        android:icon="@drawable/clothes"
+        android:title="Characters" />
+    <item
+        android:id="@+id/nav_chests"
+        android:icon="@drawable/chest"
+        android:title="Chests" />
+</menu>

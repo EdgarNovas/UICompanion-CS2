@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">APIRest</string>
+    <string name="app_name">TuAppName</string>
+
+    <string name="app_profile">Profile</string>
+    <string name="user_name">Sebastian</string>
+    <string name="user_email">Sebastian@....</string>
+    <string name="user_initial">S</string>
+    <string name="menu_button">Abrir menú de navegación</string>
+
+    <string name="btn_info">Información</string>
+    <string name="btn_chat">Chat</string>
+    <string name="btn_logout">Cerrar Sesion</string>
+
+    <string name="nav_profile_title">Profile</string>
+    <string name="nav_weapons_title">Weapons</string>
+    <string name="nav_characters_title">Characters</string>
+    <string name="nav_chests_title">Chests</string>
 </resources>
