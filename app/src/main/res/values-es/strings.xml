@@ -7,9 +7,9 @@
     <string name="user_name">Sebastian</string>
     <string name="user_email">Sebastian@....</string>
     <string name="user_initial">S</string>
-    <string name="menu_button">Abrir menú de navegación</string>
+    <string name="menu_button">Abrir menu de navegacion</string>
 
-    <string name="btn_info">Información</string>
+    <string name="btn_info">Informacion</string>
     <string name="btn_chat">Chat</string>
     <string name="btn_logout">Cerrar Sesion</string>
 
