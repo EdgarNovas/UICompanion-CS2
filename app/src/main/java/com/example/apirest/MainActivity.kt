@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if(event?.action == MotionEvent.ACTION_DOWN){
-            val intent = Intent(this, LoadingScreen::class.java)
+            val intent = Intent(this, SteamLogin::class.java)
             startActivity(intent)
 
         }
