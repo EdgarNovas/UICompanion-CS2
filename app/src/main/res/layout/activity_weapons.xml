@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context=".Weapons">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#2E3A59"
-        app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white">
 
         <ImageButton
@@ -40,25 +41,22 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="2"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-        <!-- GridLayout para organizar los elementos en una cuadrícula (Grid) -->
+        tools:ignore="SpeakableTextPresentCheck">
+
         <GridLayout
-            android:id="@+id/character_grid"
+            android:id="@+id/weapons_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:orientation="horizontal"
             android:padding="12dp"
             android:useDefaultMargins="true">
 
             <Button
-                android:id="@+id/btn_char_a"
+                android:id="@+id/btn_weapon_a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -67,8 +65,8 @@
                 android:gravity="center"
                 android:maxHeight="220dp"
                 android:minHeight="180dp"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
+                android:paddingTop="16dp"
                 android:text="Pistols"
                 android:textColor="@android:color/black"
                 android:textSize="25dp"
@@ -76,7 +74,7 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/btn_char_b"
+                android:id="@+id/btn_weapon_b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -85,8 +83,8 @@
                 android:gravity="center"
                 android:maxHeight="220dp"
                 android:minHeight="180dp"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
+                android:paddingTop="16dp"
                 android:text="Shotguns"
                 android:textColor="@android:color/black"
                 android:textSize="25dp"
@@ -94,7 +92,7 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/btn_char_c"
+                android:id="@+id/btn_weapon_c"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -103,16 +101,16 @@
                 android:gravity="center"
                 android:maxHeight="220dp"
                 android:minHeight="180dp"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:text="Submachine"
+                android:paddingTop="16dp"
+                android:text="Sub_Machin Guns"
                 android:textColor="@android:color/black"
-                android:textSize="21dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/btn_char_d"
+                android:id="@+id/btn_weapon_d"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -121,8 +119,26 @@
                 android:gravity="center"
                 android:maxHeight="220dp"
                 android:minHeight="180dp"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:text="Machin Guns"
+                android:textColor="@android:color/black"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_weapon_e"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/rounded_background_orange"
+                android:gravity="center"
+                android:maxHeight="220dp"
+                android:minHeight="180dp"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
                 android:text="Rifles"
                 android:textColor="@android:color/black"
                 android:textSize="25dp"
@@ -130,7 +146,7 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/btn_char_e"
+                android:id="@+id/btn_weapon_f"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -139,26 +155,8 @@
                 android:gravity="center"
                 android:maxHeight="220dp"
                 android:minHeight="180dp"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:text="MGs"
-                android:textColor="@android:color/black"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_f"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp"
                 android:text="Knife"
                 android:textColor="@android:color/black"
                 android:textSize="25dp"
@@ -176,8 +174,7 @@
         android:background="#2E3A59"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/buttom_nav_menu"
         app:labelVisibilityMode="labeled"
         tools:selectedItemId="@id/nav_weapons" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
