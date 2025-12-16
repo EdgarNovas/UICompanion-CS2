@@ -10,35 +10,12 @@
     android:orientation="vertical"
     tools:context=".Weapons">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/toolbar_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#2E3A59"
-        app:titleTextColor="@android:color/white">
-
-        <ImageButton
-            android:id="@+id/btn_back_or_menu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:src="@drawable/ic_menu_white_24dp"
-            app:tint="@android:color/white"
-            android:contentDescription="Botón de menú" />
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Weapons"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.appcompat.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:name="com.example.apirest.ToolbarFragment"
+        tools:layout="@layout/fragment_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
