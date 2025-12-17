@@ -125,17 +125,24 @@ class SteamLogin : AppCompatActivity() {
         })
     }
     private fun irAHome(id: String, nombre: String, avatar: String) {
-        // val intent = Intent(this, HomeActivity::class.java)
 
-        // intent.putExtra("STEAM_NAME", nombre)
+        //Crear/Abrir el archivo de preferencias donde guardare cosas de steam
 
+        val sharedPref = getSharedPreferences("MisDatosSteam", MODE_PRIVATE)
+
+        //Escribir datos
+        val editor = sharedPref.edit()
+        editor.putString("steam_id", id)      // Guardo ID
+        editor.putString("steam_name", nombre) // Guardo Nombre
+        editor.putString("steam_avatar", avatar) // Guardo Avatar
+
+        //Guardar cambios
+        editor.apply()
+
+        //Ir al menú principal
         val intent = Intent(this, MainMenu::class.java)
-        intent.putExtra("STEAM_NAME", nombre)
-        intent.putExtra("STEAM_ID", id)
-        intent.putExtra("STEAM_AVATAR", avatar)
-
 
         startActivity(intent)
-
+        finish()
     }
 }

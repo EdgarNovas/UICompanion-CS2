@@ -1,41 +1,75 @@
 package com.example.apirest
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainMenu : AppCompatActivity() {
+    private lateinit var btnCloseSesion : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
-        // 1. Recibir los datos del Intent que mandó SteamLogin
-        val steamName = intent.getStringExtra("STEAM_NAME") ?: "Usuario"
-        val steamId = intent.getStringExtra("STEAM_ID") ?: "ID no encontrado"
-        val steamAvatarUrl = intent.getStringExtra("STEAM_AVATAR")
 
-        // 2. Vincular con los elementos de la vista (activity_main_menu.xml)
-        val textName = findViewById<TextView>(R.id.text_name)
-        val textEmail = findViewById<TextView>(R.id.text_email) // Usaremos esto para el ID
-        val textInitial = findViewById<TextView>(R.id.user_initial) // La letra grande
+        crearPerfil()
 
-        // 3. Poner los textos
-        textName.text = steamName
-        textEmail.text = "ID: $steamId" // Steam no da email público, mostramos el ID
+        btnCloseSesion = findViewById<Button>(R.id.btn_cerrar_sesion)
 
-        // Poner la inicial del nombre en el círculo
-        if (steamName.isNotEmpty()) {
-            textInitial.text = steamName.first().uppercase()
-        }
-
-        // 4. (Opcional) Cargar la imagen real si quieres reemplazar la inicial
-        // Si quieres ver la foto real, necesitas una librería como Glide o Picasso.
-        // Si no la tienes instalada, puedes saltarte este paso.
-        /*
-        val avatarView = findViewById<ImageView>(R.id.tu_image_view_si_existiera)
-        Glide.with(this).load(steamAvatarUrl).into(avatarView)
-        */
+        btnCloseSesion.setOnClickListener { cerrarSesion() }
     }
+
+
+    private fun crearPerfil()
+    {
+        // Abrimos el archivo de preferencias
+        val sharedPref = getSharedPreferences("MisDatosSteam", MODE_PRIVATE)
+
+        //Leemos los datos (el segundo parámetro es el valor por defecto si no encuentra nada)
+        val mySteamId = sharedPref.getString("steam_id", null)
+        val mySteamName = sharedPref.getString("steam_name", "Usuario Desconocido")
+
+        val txtNombreCompleto = findViewById<TextView>(R.id.text_name)
+        val txtInicial = findViewById<TextView>(R.id.user_initial)
+
+        if (mySteamId != null) {
+            // Poner el nombre
+            txtNombreCompleto.text = mySteamName
+
+            // B. Poner solo la primera letra (Logica segura)
+            if (!mySteamName.isNullOrEmpty()) {
+                // Cogemos la primera letra la pasamos a String
+                val letra = mySteamName[0].toString().uppercase()
+                txtInicial.text = letra
+            } else {
+                txtInicial.text = "?" // Por si acaso viene vacío
+            }
+            //Quitado por los nombres
+            // toolbarFragment.setToolbarTitle(mySteamName)
+
+
+            Toast.makeText(this, "Hola de nuevo, $mySteamName", Toast.LENGTH_SHORT).show()
+        } else {
+            // No hay nadie logueado, quizás deberías enviarlo al Login
+        }
+    }
+
+    private fun cerrarSesion() {
+        val sharedPref = getSharedPreferences("MisDatosSteam", MODE_PRIVATE)
+        val editor = sharedPref.edit()
+
+        // Opción A: Borrar todo (Recomendado)
+        editor.clear()
+        editor.apply()
+
+        // Redirigir al usuario a la pantalla de Login de nuevo
+        val intent = Intent(this, SteamLogin::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 }
