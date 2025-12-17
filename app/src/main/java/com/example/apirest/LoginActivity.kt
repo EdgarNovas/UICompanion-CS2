@@ -1,5 +1,6 @@
 package com.example.apirest
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -41,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
                     task ->
                 if(task.isSuccessful){
                     Toast.makeText(this,"Registro correcto", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, SteamLogin::class.java)
+                    startActivity(intent)
                 }else{
                     Toast.makeText(this,"Error en el registro: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -60,6 +63,8 @@ class LoginActivity : AppCompatActivity() {
                     val userID = user?.uid
 
                     Toast.makeText(this,"Registro correcto", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, SteamLogin::class.java)
+                    startActivity(intent)
                 }else{
                     Toast.makeText(this,"Error en el registro: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
