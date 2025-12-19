@@ -16,20 +16,13 @@
         android:name="com.example.apirest.ToolbarFragment"
         tools:layout="@layout/fragment_toolbar" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <GridLayout
-            android:id="@+id/character_grid"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cases_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:padding="8dp">
-
-        </GridLayout>
-
-    </ScrollView>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="8dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
