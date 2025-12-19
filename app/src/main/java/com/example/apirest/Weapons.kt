@@ -1,5 +1,6 @@
 package com.example.apirest
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,32 @@ class Weapons: AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationView.selectedItemId = R.id.nav_weapons
+
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigation.selectedItemId = R.id.nav_characters
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, MainMenu::class.java))
+                    true
+                }
+                R.id.nav_weapons -> {
+                    startActivity(Intent(this, Weapons::class.java))
+                    true
+                }
+                R.id.nav_characters -> {
+                    startActivity(Intent(this, Character::class.java))
+                    true
+                }
+                R.id.nav_chests -> {
+                    startActivity(Intent(this, Chest::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
 
     }
 }

@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Toast
 import com.example.apirest.R
+import android.content.Intent
 
 import CS2API.AgentAdapter
 import CS2API.CS2Agent
@@ -55,6 +56,31 @@ class Character: AppCompatActivity() {
 
         bottomNavigationView.selectedItemId = R.id.nav_characters
 
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigation.selectedItemId = R.id.nav_characters
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, MainMenu::class.java))
+                    true
+                }
+                R.id.nav_weapons -> {
+                    startActivity(Intent(this, Weapons::class.java))
+                    true
+                }
+                R.id.nav_characters -> {
+                    startActivity(Intent(this, Character::class.java))
+                    true
+                }
+                R.id.nav_chests -> {
+                    startActivity(Intent(this, Chest::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
 

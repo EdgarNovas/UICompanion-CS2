@@ -3,6 +3,7 @@ package com.example.apirest
 import CS2API.CS2ApiInstance
 import CS2API.CS2Case
 import CS2API.CaseAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -54,6 +55,31 @@ class Chest: AppCompatActivity() {
 
         bottomNavigationView.selectedItemId = R.id.nav_chests
 
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigation.selectedItemId = R.id.nav_characters
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, MainMenu::class.java))
+                    true
+                }
+                R.id.nav_weapons -> {
+                    startActivity(Intent(this, Weapons::class.java))
+                    true
+                }
+                R.id.nav_characters -> {
+                    startActivity(Intent(this, Character::class.java))
+                    true
+                }
+                R.id.nav_chests -> {
+                    startActivity(Intent(this, Chest::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun obtenerDatosDeCofres() {

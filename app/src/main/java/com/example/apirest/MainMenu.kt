@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainMenu : AppCompatActivity() {
     private lateinit var btnCloseSesion : Button
@@ -21,6 +22,32 @@ class MainMenu : AppCompatActivity() {
         btnCloseSesion = findViewById<Button>(R.id.btn_cerrar_sesion)
 
         btnCloseSesion.setOnClickListener { cerrarSesion() }
+
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigation.selectedItemId = R.id.nav_characters
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, MainMenu::class.java))
+                    true
+                }
+                R.id.nav_weapons -> {
+                    startActivity(Intent(this, Weapons::class.java))
+                    true
+                }
+                R.id.nav_characters -> {
+                    startActivity(Intent(this, Character::class.java))
+                    true
+                }
+                R.id.nav_chests -> {
+                    startActivity(Intent(this, Chest::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
 
