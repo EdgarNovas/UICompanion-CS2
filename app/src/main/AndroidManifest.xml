@@ -24,6 +24,18 @@
             android:name=".LoadingScreen"
             android:exported="false" />
         <activity
+            android:name=".MainMenu"
+            android:exported="false" />
+        <activity
+            android:name=".Weapons"
+            android:exported="false" />
+        <activity
+            android:name=".Chest"
+            android:exported="false" />
+        <activity
+            android:name=".Character"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

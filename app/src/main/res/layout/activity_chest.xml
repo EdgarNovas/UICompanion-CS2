@@ -1,291 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context=".Chest">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/toolbar_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#2E3A59"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white">
-
-        <ImageButton
-            android:id="@+id/btn_back_or_menu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:src="@drawable/ic_menu_white_24dp"
-            app:tint="@android:color/white"
-            android:contentDescription="Botón de menú" />
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Chests"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.appcompat.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:name="com.example.apirest.ToolbarFragment"
+        tools:layout="@layout/fragment_toolbar" />
 
     <ScrollView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-        <!-- GridLayout para organizar los elementos en una cuadrícula (Grid) -->
+        android:layout_weight="1">
         <GridLayout
             android:id="@+id/character_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:orientation="horizontal"
-            android:padding="12dp"
-            android:useDefaultMargins="true">
-
-            <!-- "Boton" Personaje -->
-            <Button
-                android:id="@+id/btn_char_a"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_b"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_c"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_d"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_e"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_f"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_g"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_h"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_i"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_j"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_k"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/btn_char_m"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_background_orange"
-                android:drawableTop="@drawable/placeholder_char_icon"
-                android:gravity="center"
-                android:maxHeight="220dp"
-                android:minHeight="180dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="A"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+            android:padding="8dp">
 
         </GridLayout>
 
@@ -302,4 +42,4 @@
         app:menu="@menu/buttom_nav_menu"
         app:labelVisibilityMode="labeled"
         tools:selectedItemId="@id/nav_chests" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
