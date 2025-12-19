@@ -1,8 +1,8 @@
 package com.example.apirest
 
-import CasesAPI.CS2ApiInstance
-import CasesAPI.CS2Case
-import CasesAPI.CaseAdapter
+import CS2API.CS2ApiInstance
+import CS2API.CS2Case
+import CS2API.CaseAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -13,10 +13,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apirest.ToolbarFragment
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Callback
 
 class Chest: AppCompatActivity() {
 

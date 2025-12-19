@@ -140,7 +140,7 @@ class SteamLogin : AppCompatActivity() {
         editor.apply()
 
         //Ir al menú principal
-        val intent = Intent(this, Chest::class.java)
+        val intent = Intent(this, Character::class.java)
 
         startActivity(intent)
         finish()
