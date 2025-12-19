@@ -14,4 +14,5 @@
     <string name="nav_weapons_title">Armas</string>
     <string name="nav_characters_title">Personajes</string>
     <string name="nav_chests_title">Cajas</string>
+    <string name="steamAvatar" />
 </resources>
