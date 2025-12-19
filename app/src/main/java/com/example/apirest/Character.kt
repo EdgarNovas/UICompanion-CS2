@@ -8,9 +8,22 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Toast
 import com.example.apirest.R
-import com.example.apirest.ToolbarFragment
+
+import CS2API.AgentAdapter
+import CS2API.CS2Agent
+import CS2API.CS2ApiInstance
+import android.util.Log
+import androidx.activity.enableEdgeToEdge
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Response
 
 class Character: AppCompatActivity() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: AgentAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,9 +45,38 @@ class Character: AppCompatActivity() {
                 Toast.makeText(this, "Abrir Menú de Personajes", Toast.LENGTH_SHORT).show()
             }
         }
+
+        recyclerView = findViewById(R.id.agents_recycler_view)
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columnas
+
+        obtenerAgentes()
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationView.selectedItemId = R.id.nav_characters
 
+    }
+
+
+    private fun obtenerAgentes() {
+        CS2ApiInstance.api.getAgents().enqueue(object : retrofit2.Callback<List<CS2Agent>> {
+            override fun onResponse(call: Call<List<CS2Agent>>, response: Response<List<CS2Agent>>) {
+                if (response.isSuccessful) {
+                    val agentsList = response.body() ?: emptyList()
+
+                    //Filtrar para quitar los que no tengan imagen
+                    val validAgents = agentsList.filter { !it.image.isNullOrEmpty() }
+
+                    adapter = AgentAdapter(validAgents)
+                    recyclerView.adapter = adapter
+                } else {
+                    Toast.makeText(this@Character, "Error API: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<CS2Agent>>, t: Throwable) {
+                Toast.makeText(this@Character, "Error Red: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

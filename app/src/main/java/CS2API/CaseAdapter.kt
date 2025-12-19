@@ -1,4 +1,4 @@
-package CasesAPI
+package CS2API
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,4 +1,4 @@
-package CasesAPI
+package CS2API
 
 import com.google.gson.annotations.SerializedName
 

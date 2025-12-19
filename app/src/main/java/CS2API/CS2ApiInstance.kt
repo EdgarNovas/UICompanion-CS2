@@ -1,4 +1,4 @@
-package CasesAPI
+package CS2API
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 object CS2ApiInstance {
