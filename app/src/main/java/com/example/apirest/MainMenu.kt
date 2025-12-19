@@ -62,7 +62,6 @@ class MainMenu : AppCompatActivity() {
         val sharedPref = getSharedPreferences("MisDatosSteam", MODE_PRIVATE)
         val editor = sharedPref.edit()
 
-        // Opción A: Borrar todo (Recomendado)
         editor.clear()
         editor.apply()
 

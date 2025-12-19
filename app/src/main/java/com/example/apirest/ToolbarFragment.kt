@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import com.example.apirest.R
 
 class ToolbarFragment : Fragment() {
 
-    private lateinit var toolbarTitle: TextView
-    private lateinit var menuButton: ImageButton
+    // Usamos '?' para evitar errores de lateinit
+    private var toolbarTitle: TextView? = null
+    private var menuButton: ImageButton? = null
+
+    // Variables para guardar los datos si la vista aún no está lista
+    private var pendingTitle: String? = null
+    private var pendingClickListener: View.OnClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,18 +27,28 @@ class ToolbarFragment : Fragment() {
         toolbarTitle = view.findViewById(R.id.toolbar_title)
         menuButton = view.findViewById(R.id.btn_menu)
 
+
+        pendingTitle?.let {
+            toolbarTitle?.text = it
+        }
+
+
+        pendingClickListener?.let {
+            menuButton?.setOnClickListener(it)
+        }
+
         return view
     }
 
+    // Función para cambiar el título desde fuera
     fun setToolbarTitle(title: String) {
-        if (::toolbarTitle.isInitialized) {
-            toolbarTitle.text = title
-        }
+        pendingTitle = title // Guardamos el dato por si acaso
+        toolbarTitle?.text = title // Si la vista ya existe, lo cambiamos directamente
     }
 
+    // Función para asignar la acción del botón
     fun setMenuButtonAction(listener: View.OnClickListener) {
-        if (::menuButton.isInitialized) {
-            menuButton.setOnClickListener(listener)
-        }
+        pendingClickListener = listener
+        menuButton?.setOnClickListener(listener)
     }
 }
