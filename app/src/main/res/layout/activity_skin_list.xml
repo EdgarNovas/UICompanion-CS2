@@ -17,7 +17,7 @@
         android:id="@+id/skins_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:padding="8dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
