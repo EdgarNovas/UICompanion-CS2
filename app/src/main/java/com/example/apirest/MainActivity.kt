@@ -52,11 +52,11 @@ class MainActivity : AppCompatActivity() {
 
         if (steamId != null) {
             // Tiene Firebase Y tiene datos de Steam -> Directo al Menú
-            val intent = Intent(this, MainMenu::class.java).apply {
+            val intent = Intent(this, Character::class.java).apply {
                 putExtra("STEAM_ID", steamId)
                 putExtra("STEAM_NAME", steamName)
                 putExtra("STEAM_AVATAR", steamAvatar)
-                // Esto borra el historial para que no pueda volver atrás al Splash
+                // Esto borra el historial para que no pueda volver atrás al Splash ///IA
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intent)

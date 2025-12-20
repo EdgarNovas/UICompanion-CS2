@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.apirest.R
 import com.bumptech.glide.Glide
 
+import CS2API.CS2Case
 class CaseAdapter(private val cases: List<CS2Case>) : RecyclerView.Adapter<CaseAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -25,6 +26,22 @@ class CaseAdapter(private val cases: List<CS2Case>) : RecyclerView.Adapter<CaseA
         val item = cases[position]
         holder.name.text = item.name
         Glide.with(holder.itemView.context).load(item.image).into(holder.img)
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+
+            val intent =
+                android.content.Intent(context, com.example.apirest.SkinDetailActivity::class.java)
+
+            intent.putExtra("EXTRA_NAME", item.name)
+            intent.putExtra("EXTRA_IMAGE", item.image)
+
+            intent.putExtra("EXTRA_CATEGORY", "Contenedor / Caja")
+            intent.putExtra("EXTRA_DESC", item.description)
+
+            context.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount() = cases.size

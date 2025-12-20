@@ -33,6 +33,21 @@ class AgentAdapter(private val agents: List<CS2Agent>) : RecyclerView.Adapter<Ag
             .load(agent.image)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .into(holder.img)
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+
+            val intent =
+                android.content.Intent(context, com.example.apirest.SkinDetailActivity::class.java)
+            intent.putExtra("EXTRA_NAME", agent.name)
+            intent.putExtra("EXTRA_IMAGE", agent.image)
+
+            intent.putExtra("EXTRA_CATEGORY", "Agent")
+            intent.putExtra("EXTRA_DESC", agent.description)
+
+            context.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount() = agents.size
