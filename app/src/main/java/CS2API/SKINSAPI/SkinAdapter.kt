@@ -30,6 +30,22 @@ class SkinAdapter(private val skins: List<CS2Skin>) : RecyclerView.Adapter<SkinA
             .load(skin.image)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .into(holder.img)
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent =
+                android.content.Intent(context, com.example.apirest.SkinDetailActivity::class.java)
+
+            // Pasamos los datos a la otra pantalla
+            intent.putExtra("EXTRA_NAME", skin.name)
+            intent.putExtra("EXTRA_IMAGE", skin.image)
+            intent.putExtra("EXTRA_CATEGORY", skin.category?.name)
+            intent.putExtra("EXTRA_DESC", skin.description)
+            intent.putExtra("EXTRA_PRICE", skin.price)
+
+
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = skins.size
