@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.view.MotionEvent
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         analytics = FirebaseAnalytics.getInstance(this)
+        //Esto es el inicio de los logs de errores
+        FirebaseCrashlytics.getInstance().setCustomKey("AppStarted",true);
 
         val bundle = Bundle().apply {
             putString("portrait_orientation",(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT).toString())
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
 
         if (auth.currentUser != null) {
-            // Comprobamos si tenemos los datos de Steam guardados
+            // Comprobamos si tenemos los datos de Firebase guardados
             redirigirUsuario()
             return
         }

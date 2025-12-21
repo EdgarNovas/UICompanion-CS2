@@ -14,6 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
 
@@ -77,13 +79,14 @@ class Chest: AppCompatActivity() {
                     recyclerView.adapter = adapter
 
                 } else {
-                    Log.e("API_CS2", "Error en respuesta: ${response.code()}")
+
+                    FirebaseCrashlytics.getInstance().log( "Error en respuesta: ${response.code()}")
                     Toast.makeText(applicationContext, "Error API: ${response.code()}", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<List<CS2Case>>, t: Throwable) {
-                Log.e("API_CS2", "Fallo total: ${t.message}")
+                FirebaseCrashlytics.getInstance().recordException(t)
                 Toast.makeText(applicationContext, "Fallo de red: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })

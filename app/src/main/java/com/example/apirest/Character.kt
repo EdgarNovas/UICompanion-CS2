@@ -17,6 +17,7 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
 
@@ -69,11 +70,13 @@ class Character: AppCompatActivity() {
                     adapter = AgentAdapter(validAgents)
                     recyclerView.adapter = adapter
                 } else {
+                    FirebaseCrashlytics.getInstance().log( "Error en respuesta: ${response.code()}")
                     Toast.makeText(this@Character, "Error API: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<CS2Agent>>, t: Throwable) {
+                FirebaseCrashlytics.getInstance().recordException(t)
                 Toast.makeText(this@Character, "Error Red: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })

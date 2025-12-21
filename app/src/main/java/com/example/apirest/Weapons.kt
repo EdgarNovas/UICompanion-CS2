@@ -15,6 +15,7 @@ import CS2API.CS2ApiInstance
 import CS2API.CategoryAdapter
 import CS2API.SKINSAPI.CS2Skin
 import androidx.activity.enableEdgeToEdge
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
 
@@ -76,11 +77,13 @@ class Weapons: AppCompatActivity() {
                         }
 
                 } else {
+                    FirebaseCrashlytics.getInstance().log( "Error en respuesta: ${response.code()}")
                     Toast.makeText(this@Weapons, "Error cargando categorías", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<CS2Skin>>, t: Throwable) {
+                FirebaseCrashlytics.getInstance().recordException(t)
                 Toast.makeText(this@Weapons, "Fallo de red: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
