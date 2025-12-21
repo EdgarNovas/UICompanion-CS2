@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class SkinDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +36,14 @@ class SkinDetailActivity : AppCompatActivity() {
         val description = intent.getStringExtra("EXTRA_DESC") ?: "No hay descripción disponible para este objeto."
         val price = intent.getStringExtra("EXTRA_PRICE")
 
-
+        if (name == null || image == null) {
+            // Esto no debería pasar
+            val error = Exception("SkinDetailActivity recibió datos NULOS. Name: $name")
+            FirebaseCrashlytics.getInstance().recordException(error)
+            //Salir si pasa eso
+            finish()
+            return
+        }
 
         // Vincular vistas y poner datos
         val imgDetail = findViewById<ImageView>(R.id.detail_image)

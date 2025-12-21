@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class MainMenu : AppCompatActivity() {
     private lateinit var btnCloseSesion : Button
@@ -53,6 +54,13 @@ class MainMenu : AppCompatActivity() {
         val mySteamName = sharedPref.getString("steam_name", "Usuario Desconocido")
         val mySteamAvatarUrl = sharedPref.getString("steam_avatar", null) // Recuperamos la URL
 
+        //Si estan corruptos o vacios los datos de steam guardados lo notifico
+        FirebaseCrashlytics.getInstance().log("Usuario entró al Menú Principal: $mySteamName")
+        if (mySteamName == "Usuario Desconocido" && mySteamAvatarUrl == null) {
+
+            val error = Exception("MainMenu: Datos de Steam vacíos o corruptos")
+            FirebaseCrashlytics.getInstance().recordException(error)
+        }
 
         val txtNombreCompleto = findViewById<TextView>(R.id.text_name)
 

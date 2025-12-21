@@ -12,6 +12,7 @@ import CS2API.SKINSAPI.SkinAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
 
@@ -74,6 +75,7 @@ class SkinListActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<CS2Skin>>, t: Throwable) {
+                FirebaseCrashlytics.getInstance().recordException(t)
                 Toast.makeText(applicationContext, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
