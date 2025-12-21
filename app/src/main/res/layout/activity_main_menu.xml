@@ -122,6 +122,21 @@
             android:stateListAnimator="@null"
             android:textStyle="bold"/>
 
+        <Button
+            android:id="@+id/btn_salir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/rounded_background_orange"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:layout_marginTop="16dp"
+            android:padding="20dp"
+            android:gravity="start|center_vertical"
+            android:stateListAnimator="@null"
+            android:textStyle="bold"/>
+
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

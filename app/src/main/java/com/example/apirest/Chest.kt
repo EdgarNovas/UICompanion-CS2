@@ -36,7 +36,7 @@ class Chest: AppCompatActivity() {
                 as? ToolbarFragment
 
         toolbarFragment?.let {
-            it.setToolbarTitle("Cofres")
+            it.setToolbarTitle("Chests")
             it.setToolbarTitle(getString(R.string.nav_chests_title))
 
             it.setMenuButtonAction {
