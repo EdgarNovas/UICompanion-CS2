@@ -24,8 +24,14 @@ class MainMenu : AppCompatActivity() {
 
         toolbarFragment?.let {
             it.setToolbarTitle("Profile")
+            it.setToolbarTitle(getString(R.string.nav_profile_title))
             it.setMenuButtonAction {
                 Toast.makeText(this, "Menú de Perfil", Toast.LENGTH_SHORT).show()
+            }
+
+            val btnSalir = findViewById<Button>(R.id.btn_salir)
+            btnSalir.setOnClickListener {
+                salirDeAplicacion()
             }
         }
 
@@ -78,6 +84,10 @@ class MainMenu : AppCompatActivity() {
         val intent = Intent(this, SteamLogin::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun salirDeAplicacion() {
+        finishAffinity()
     }
 
 }

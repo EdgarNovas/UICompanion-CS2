@@ -34,7 +34,7 @@ class Weapons: AppCompatActivity() {
                 as? ToolbarFragment
 
         toolbarFragment?.let {
-            it.setToolbarTitle("Armas")
+            it.setToolbarTitle("Weapons")
             it.setToolbarTitle(getString(R.string.nav_weapons_title))
 
             it.setMenuButtonAction {
