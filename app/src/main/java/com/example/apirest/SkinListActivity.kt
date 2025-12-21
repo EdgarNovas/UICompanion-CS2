@@ -61,7 +61,7 @@ class SkinListActivity : AppCompatActivity() {
 
                     val filteredList = allSkins.filter { skin ->
                         skin.category?.name?.contains(categoryToFilter, ignoreCase = true) == true
-                        // Nota: La API agrupa Shotguns y Machine Guns como "Heavy"
+
                     }
 
                     recyclerView.adapter = SkinAdapter(filteredList)

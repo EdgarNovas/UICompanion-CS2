@@ -61,13 +61,13 @@ class MainMenu : AppCompatActivity() {
 
         txtNombreCompleto.text = mySteamName
 
-
+    //IA ayudo para cargar imagenes
         if (mySteamAvatarUrl != null) {
             Glide.with(this)
-                .load(mySteamAvatarUrl) // La URL que guardaste
+                .load(mySteamAvatarUrl) // La URL
                 .placeholder(R.drawable.ic_launcher_foreground) // Imagen mientras carga
                 .error(R.drawable.ic_launcher_foreground) // Imagen si falla
-                .into(imgAvatar) // Donde ponerla
+                .into(imgAvatar)
         }
 
         Toast.makeText(this, "Hola de nuevo, $mySteamName", Toast.LENGTH_SHORT).show()

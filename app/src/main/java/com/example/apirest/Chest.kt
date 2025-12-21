@@ -44,11 +44,11 @@ class Chest: AppCompatActivity() {
             }
         }
 
-        // 2. Inicializar RecyclerView con 2 columnas (como tu GridLayout anterior)
+        //Inicializar RecyclerView con 2 columnas (como tu GridLayout anterior)
         recyclerView = findViewById(R.id.cases_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        // 3. Llamar a la API
+        // Llamar a la API
         obtenerDatosDeCofres()
 
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -56,8 +56,6 @@ class Chest: AppCompatActivity() {
     }
 
     private fun obtenerDatosDeCofres() {
-        // Mostramos un Toast para saber que intentó cargar
-        // Toast.makeText(this, "Cargando cofres...", Toast.LENGTH_SHORT).show()
 
         CS2ApiInstance.api.getCrates().enqueue(object : retrofit2.Callback<List<CS2Case>> {
             override fun onResponse(call: Call<List<CS2Case>>, response: Response<List<CS2Case>>) {

@@ -19,6 +19,8 @@ import retrofit2.Call
 import retrofit2.Response
 
 class Weapons: AppCompatActivity() {
+
+    val numOfRows : Int = 2
     private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,7 @@ class Weapons: AppCompatActivity() {
 
 
         recyclerView = findViewById(R.id.categories_recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columnas de botones
+        recyclerView.layoutManager = GridLayoutManager(this, numOfRows)
 
         //generar botones
         generarCategoriasAutomaticamente()
@@ -56,29 +58,20 @@ class Weapons: AppCompatActivity() {
 
 
     private fun generarCategoriasAutomaticamente() {
-        // Reutilizamos la llamada de skins.json que ya creaste
+
         CS2ApiInstance.api.getSkins().enqueue(object : retrofit2.Callback<List<CS2Skin>> {
             override fun onResponse(call: Call<List<CS2Skin>>, response: Response<List<CS2Skin>>) {
                 if (response.isSuccessful) {
                     val allSkins = response.body() ?: emptyList()
 
-                    // --- AQUÍ ESTÁ LA LÓGICA DE EXTRACCIÓN ---
-                    // 1. Recorremos todas las skins
-                    // 2. Sacamos el nombre de la categoría (it.category?.name)
-                    // 3. 'distinct()' elimina duplicados (para que no salga "Pistols" 500 veces)
-                    // 4. 'sorted()' los ordena alfabéticamente
-
                     val categoriasUnicas = allSkins
-                        .mapNotNull { it.category?.name } // Extrae nombres, ignora nulos
-                        .distinct()                       // Solo únicos
-                        .sorted()                         // Ordena A-Z
-                    // Opcional: Si quieres quitar "Gloves" o cosas que no sean armas:
-                    // .filter { it != "Gloves" && it != "Knives" }
+                        .mapNotNull { it.category?.name }
+                        .distinct()
+                        .sorted()
 
-                    // Configurar el adaptador con la lista generada
                     recyclerView.adapter =
                         CategoryAdapter(categoriasUnicas) { categoriaSeleccionada ->
-                            // Esto se ejecuta cuando haces click en un botón generado
+
                             abrirListaSkins(categoriaSeleccionada)
                         }
 

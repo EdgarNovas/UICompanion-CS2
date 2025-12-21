@@ -20,7 +20,7 @@ import retrofit2.Response
 class SteamLogin : AppCompatActivity() {
 
     private val STEAM_API_KEY = "1C85CB737EE670AD0DFDE181DBACAC46"
-    private val client = OkHttpClient()
+    //private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +103,7 @@ class SteamLogin : AppCompatActivity() {
 
                         Toast.makeText(applicationContext, "Bienvenido: $nombre", Toast.LENGTH_LONG).show()
 
-                        // Llama a la función que cambia de Activity
+                        // función que cambia de Activity
                         irAHome(steamId, nombre, avatarUrl)
                     } else {
                         Toast.makeText(applicationContext, "Error: Datos de Steam no encontrados.", Toast.LENGTH_SHORT).show()
