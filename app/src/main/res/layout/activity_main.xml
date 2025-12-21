@@ -13,6 +13,6 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_launcher_foreground"
-        tools:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/loading_screen"
+        tools:srcCompat="@drawable/loading_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>
