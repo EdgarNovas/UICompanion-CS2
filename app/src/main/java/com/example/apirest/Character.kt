@@ -52,35 +52,8 @@ class Character: AppCompatActivity() {
 
         obtenerAgentes()
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        bottomNavigationView.selectedItemId = R.id.nav_characters
-
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        bottomNavigation.selectedItemId = R.id.nav_characters
-
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_profile -> {
-                    startActivity(Intent(this, MainMenu::class.java))
-                    true
-                }
-                R.id.nav_weapons -> {
-                    startActivity(Intent(this, Weapons::class.java))
-                    true
-                }
-                R.id.nav_characters -> {
-                    startActivity(Intent(this, Character::class.java))
-                    true
-                }
-                R.id.nav_chests -> {
-                    startActivity(Intent(this, Chest::class.java))
-                    true
-                }
-                else -> false
-            }
-        }
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        BottomNavigation(this).setup(bottomNavView, R.id.nav_characters)
     }
 
 
