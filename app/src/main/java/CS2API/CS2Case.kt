@@ -10,7 +10,7 @@ data class CS2Case(
     val name: String?,
 
     @SerializedName("image")
-    val image: String?, // Importante: a veces la API no tiene imagen para todos
+    val image: String?,
 
     @SerializedName("description")
     val description: String?

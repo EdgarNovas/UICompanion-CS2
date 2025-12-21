@@ -18,22 +18,23 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SteamLogin : AppCompatActivity() {
-    // ⚠️ PEGA AQUÍ TU API KEY DE STEAM
+
     private val STEAM_API_KEY = "1C85CB737EE670AD0DFDE181DBACAC46"
-    private val client = OkHttpClient()
+    //private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_steam_login)
-        // Creamos el WebView programáticamente (o úsalo desde tu layout XML)
+        //IA PARA HACER AYUDARME CON EL LOGIN DE STEAM
+
+
         val webView = WebView(this)
         setContentView(webView)
 
         // Configuración básica
         webView.settings.javaScriptEnabled = true
 
-        // 1. Construimos la URL de llamada a Steam (OpenID)
-        val realm = "https://steamcommunity.com" // Tu dominio (puede ser ficticio para pruebas)
+
+        val realm = "https://steamcommunity.com"
         val url = "https://steamcommunity.com/openid/login?" +
                 "openid.ns=http://specs.openid.net/auth/2.0&" +
                 "openid.mode=checkid_setup&" +
@@ -42,7 +43,7 @@ class SteamLogin : AppCompatActivity() {
                 "openid.identity=http://specs.openid.net/auth/2.0/identifier_select&" +
                 "openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select"
 
-        // 2. Cargamos la URL
+
         webView.loadUrl(url)
 
 
@@ -58,7 +59,7 @@ class SteamLogin : AppCompatActivity() {
                     if (steamId != null) {
                         Toast.makeText(applicationContext, "ID: $steamId", Toast.LENGTH_LONG).show()
 
-                        // ⭐️ LLAMADA CORRECTA A LA API ⭐️
+
                         obtenerDatosDelUsuarioConRetrofit(steamId)
                     }
 
@@ -76,24 +77,18 @@ class SteamLogin : AppCompatActivity() {
     // Función para limpiar la URL y sacar solo el número ID
     private fun extractSteamId(url: String): String? {
         val uri = Uri.parse(url)
+        //Ayuda de IA
         val claimedId = uri.getQueryParameter("openid.claimed_id")
 
-        // El formato suele ser: https://steamcommunity.com/openid/id/76561198XXXXXXXXX
-        // Necesitamos solo los números del final
         return claimedId?.substringAfterLast("/")
     }
 
     private fun obtenerDatosDelUsuarioConRetrofit(steamId: String) {
 
-        // ⚠️ Usa tu propia API Key de Steam aquí
-        val MY_STEAM_KEY = "1C85CB737EE670AD0DFDE181DBACAC46"
-
-
         val call = SteamApiCall.apiService.getPlayerSummary(
-            apiKey = MY_STEAM_KEY,
+            apiKey = this.STEAM_API_KEY,
             steamId = steamId
         )
-
 
         call.enqueue(object : Callback<SteamResponse> {
 
@@ -108,7 +103,7 @@ class SteamLogin : AppCompatActivity() {
 
                         Toast.makeText(applicationContext, "Bienvenido: $nombre", Toast.LENGTH_LONG).show()
 
-                        // Llama a la función que cambia de Activity
+                        // función que cambia de Activity
                         irAHome(steamId, nombre, avatarUrl)
                     } else {
                         Toast.makeText(applicationContext, "Error: Datos de Steam no encontrados.", Toast.LENGTH_SHORT).show()
@@ -140,7 +135,7 @@ class SteamLogin : AppCompatActivity() {
         editor.apply()
 
         //Ir al menú principal
-        val intent = Intent(this, Weapons::class.java)
+        val intent = Intent(this, MainMenu::class.java)
 
         startActivity(intent)
         finish()

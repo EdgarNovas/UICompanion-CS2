@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+// Echo con IA (hasta return@setOnItemSelectedListener true)
 class BottomNavigation(private val context: Context) {
 
     fun setup(bottomNavigationView: BottomNavigationView, currentItemId: Int) {
         bottomNavigationView.selectedItemId = currentItemId
+
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             if (item.itemId == currentItemId) {

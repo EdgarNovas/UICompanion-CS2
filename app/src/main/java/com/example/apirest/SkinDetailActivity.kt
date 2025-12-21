@@ -21,22 +21,23 @@ class SkinDetailActivity : AppCompatActivity() {
             insets
         }
 
-        // 1. Recibir datos del Intent
-        val name = intent.getStringExtra("EXTRA_NAME") ?: "Sin Nombre"
-        val image = intent.getStringExtra("EXTRA_IMAGE")
-        val category = intent.getStringExtra("EXTRA_CATEGORY") ?: "General"
-        val description = intent.getStringExtra("EXTRA_DESC") ?: "No hay descripción disponible para este objeto."
-        // Nota: La API de CS2 a veces no da precio directo, puedes pasar un string vacío si no hay.
-        val price = intent.getStringExtra("EXTRA_PRICE")
-
-        // 2. Configurar Toolbar (Botón atrás)
+        //Botón atrás
         val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container) as? ToolbarFragment
         toolbarFragment?.let {
             it.setToolbarTitle("Detalle")
             it.setMenuButtonAction { finish() } // Vuelve atrás
         }
 
-        // 3. Vincular vistas y poner datos
+        // Recibir datos del Intent
+        val name = intent.getStringExtra("EXTRA_NAME") ?: "Sin Nombre"
+        val image = intent.getStringExtra("EXTRA_IMAGE")
+        val category = intent.getStringExtra("EXTRA_CATEGORY") ?: "General"
+        val description = intent.getStringExtra("EXTRA_DESC") ?: "No hay descripción disponible para este objeto."
+        val price = intent.getStringExtra("EXTRA_PRICE")
+
+
+
+        // Vincular vistas y poner datos
         val imgDetail = findViewById<ImageView>(R.id.detail_image)
         val tvName = findViewById<TextView>(R.id.detail_name)
         val tvCategory = findViewById<TextView>(R.id.detail_category)
@@ -58,12 +59,6 @@ class SkinDetailActivity : AppCompatActivity() {
             .load(image)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .into(imgDetail)
-
-
-        // 4. Configurar Bottom Navigation (Solo visual)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNav.selectedItemId = R.id.nav_weapons // O la que corresponda
-        // Aquí no ponemos listener de navegación para no complicar, o puedes copiar el de las otras actividades
     }
 
 }
