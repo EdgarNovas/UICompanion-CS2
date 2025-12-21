@@ -56,25 +56,25 @@ class ToolbarFragment : Fragment() {
         val popup = PopupMenu(requireContext(), view)
         popup.menuInflater.inflate(R.menu.toolbar_menu, popup.menu) // Inflamos el XML del paso 1
 
-        // A. Averiguar estado actual para marcar el Checkbox
+        // Averiguar estado actual para marcar el Checkbox
         val sharedPref = requireContext().getSharedPreferences("AppConfig", Context.MODE_PRIVATE)
         val isDarkMode = sharedPref.getBoolean("dark_mode", true)
 
         // Buscamos el item del menú y le ponemos el check si corresponde
         popup.menu.findItem(R.id.action_dark_mode).isChecked = isDarkMode
 
-        // B. Qué pasa al hacer click en una opción
+        //Qué pasa al hacer click en una opcion
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_dark_mode -> {
 
-                    val nuevoEstado = !item.isChecked
-                    item.isChecked = nuevoEstado
+                    // Si estaba oscuro ahora será claro
+                    val nuevoEstado = !isDarkMode
 
-                    //Guardar en memoria
+                    // Guardar
                     sharedPref.edit().putBoolean("dark_mode", nuevoEstado).apply()
 
-                    // Aplicar tema
+                    // Aplicar
                     if (nuevoEstado) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     } else {
@@ -92,7 +92,7 @@ class ToolbarFragment : Fragment() {
 
     // Función para cambiar el título desde fuera
     fun setToolbarTitle(title: String) {
-        pendingTitle = title // Guardamos el dato por si acaso
+        pendingTitle = title
         toolbarTitle?.text = title // Si la vista ya existe, lo cambiamos directamente
     }
 
