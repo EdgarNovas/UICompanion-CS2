@@ -58,12 +58,6 @@ class SkinDetailActivity : AppCompatActivity() {
             .load(image)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .into(imgDetail)
-
-
-        // 4. Configurar Bottom Navigation (Solo visual)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNav.selectedItemId = R.id.nav_weapons // O la que corresponda
-        // Aquí no ponemos listener de navegación para no complicar, o puedes copiar el de las otras actividades
     }
 
 }
