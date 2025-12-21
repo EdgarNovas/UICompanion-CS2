@@ -1,3 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">APIRest</string>
+    <string name="app_name">TuAppName</string>
+
+    <string name="app_profile">Profile</string>
+    <string name="user_name">Sebastian</string>
+    <string name="user_email">Sebastian@....</string>
+    <string name="user_initial">S</string>
+    <string name="menu_button">Open navigation menu</string>
+
+    <string name="btn_info">Information</string>
+    <string name="btn_chat">Chat</string>
+    <string name="btn_logout">Log Out</string>
+
+    <string name="nav_profile_title">Profile</string>
+    <string name="nav_weapons_title">Weapons</string>
+    <string name="nav_characters_title">Characters</string>
+    <string name="nav_chests_title">Chests</string>
+    <string name="tapcontinue">Tap To Continue</string>
+    <string name="steamAvatar" />
+
+
 </resources>

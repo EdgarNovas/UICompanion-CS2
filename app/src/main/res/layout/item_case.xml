@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/imgCase"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/tvCaseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/counter_main_text"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>

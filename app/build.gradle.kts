@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.apirest"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.apirest"
@@ -46,6 +46,13 @@ dependencies {
     implementation(libs.converterGson)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+    implementation(libs.glide)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

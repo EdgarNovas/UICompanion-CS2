@@ -3,6 +3,11 @@
     <style name="Base.Theme.APIRest" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="android:windowBackground">@color/main_background</item>
+        <item name="android:colorBackground">@color/main_background</item>
+
+        <item name="android:textColor">@color/main_text</item>
     </style>
 
     <style name="Theme.APIRest" parent="Base.Theme.APIRest" />
