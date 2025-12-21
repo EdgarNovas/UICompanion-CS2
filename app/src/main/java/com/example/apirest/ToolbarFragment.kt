@@ -58,7 +58,7 @@ class ToolbarFragment : Fragment() {
 
         // A. Averiguar estado actual para marcar el Checkbox
         val sharedPref = requireContext().getSharedPreferences("AppConfig", Context.MODE_PRIVATE)
-        val isDarkMode = sharedPref.getBoolean("dark_mode", false)
+        val isDarkMode = sharedPref.getBoolean("dark_mode", true)
 
         // Buscamos el item del menú y le ponemos el check si corresponde
         popup.menu.findItem(R.id.action_dark_mode).isChecked = isDarkMode

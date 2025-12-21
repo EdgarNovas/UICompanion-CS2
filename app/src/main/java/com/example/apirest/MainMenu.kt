@@ -19,6 +19,16 @@ class MainMenu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
+        val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container)
+                as? ToolbarFragment
+
+        toolbarFragment?.let {
+            it.setToolbarTitle("Profile")
+            it.setMenuButtonAction {
+                Toast.makeText(this, "Menú de Perfil", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         crearPerfil()
 
         btnCloseSesion = findViewById<Button>(R.id.btn_cerrar_sesion)
