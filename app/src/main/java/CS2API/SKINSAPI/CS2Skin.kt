@@ -12,5 +12,5 @@ data class CS2Skin(
 )
 
 data class Category(
-    @SerializedName("name") val name: String? // Ej: "Pistols", "Rifles", "Heavy", "SMGs"
+    @SerializedName("name") val name: String?
 )

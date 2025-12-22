@@ -2,7 +2,7 @@ package SteamApi
 
 import com.google.gson.annotations.SerializedName
 
-// Estructura de la respuesta general de Steam
+// respuesta de Steam
 data class SteamResponse(
     val response: SteamPlayerResponse
 )

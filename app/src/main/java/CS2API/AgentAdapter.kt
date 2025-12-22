@@ -18,7 +18,7 @@ class AgentAdapter(private val agents: List<CS2Agent>) : RecyclerView.Adapter<Ag
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Usaremos un layout nuevo 'item_agent'
+
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_agent, parent, false)
         return ViewHolder(view)
     }

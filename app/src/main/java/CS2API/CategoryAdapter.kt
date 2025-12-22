@@ -14,12 +14,12 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        // Usaremos un layout simple que sea solo un botón o un texto bonito
+        // Usaremos un layout simple que sea solo un botón
         val buttonText: TextView = view.findViewById(R.id.tvCategoryName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Crearemos un layout específico para estos botones
+        // Crearemos un layout para estos botones
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category_button, parent, false)
         return ViewHolder(view)
     }

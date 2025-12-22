@@ -29,12 +29,12 @@ class LoginActivity : AppCompatActivity() {
         btnRegister = findViewById(R.id.btnRegister)
         btnLogin = findViewById(R.id.btnLogin)
 
-        btnRegister.setOnClickListener { Register() }
-        btnLogin.setOnClickListener { Login() }
+        btnRegister.setOnClickListener { register() }
+        btnLogin.setOnClickListener { login() }
     }
 
 
-    private fun Register(){
+    private fun register(){
         val email = emailField.text.toString()
         val password = passwordField.text.toString()
         auth.createUserWithEmailAndPassword(email,password)
@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun Login(){
+    private fun login(){
         val email = emailField.text.toString()
         val password = passwordField.text.toString()
 

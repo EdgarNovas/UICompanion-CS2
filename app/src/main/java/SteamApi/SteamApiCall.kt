@@ -9,14 +9,14 @@ object SteamApiCall {
 
     private const val BASE_URL = "https://api.steampowered.com/"
 
-    // Cliente HTTP con timeouts, como ya lo tienes configurado
+    // Cliente HTTP con timeouts
     private val httpClient = OkHttpClient.Builder()
         .connectTimeout(10,TimeUnit.MINUTES)
         .readTimeout(10,TimeUnit.MINUTES)
         .writeTimeout(10,TimeUnit.MINUTES)
         .build()
 
-    // Instancia de Retrofit con carga perezosa (lazy)
+    // Instancia de Retrofit con carga perezosa
     val apiService : SteamApiInstance by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
