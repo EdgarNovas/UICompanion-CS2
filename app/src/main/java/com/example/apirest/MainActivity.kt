@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         analytics = FirebaseAnalytics.getInstance(this)
         //Esto es el inicio de los logs de errores
         FirebaseCrashlytics.getInstance().setCustomKey("AppStarted",true);
@@ -27,49 +28,36 @@ class MainActivity : AppCompatActivity() {
 
         val auth = FirebaseAuth.getInstance()
 
-        if (auth.currentUser != null) {
-            // Comprobamos si tenemos los datos de Firebase guardados
-            redirigirUsuario()
-            return
-        }
+        val firebaseUser = auth.currentUser
 
-
-        analytics.logEvent("MyFirstEvent", bundle)
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if(event?.action == MotionEvent.ACTION_DOWN){
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-
-        }
-        return super.onTouchEvent(event)
-
-    }
-
-    private fun redirigirUsuario() {
+        //Miro si hay algo en el movil de steam
         val sharedPref = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
         val steamId = sharedPref.getString("steam_id", null)
-        val steamName = sharedPref.getString("steam_name", "Usuario")
-        val steamAvatar = sharedPref.getString("steam_avatar", null)
 
-        if (steamId != null) {
-            // Tiene Firebase Y tiene datos de Steam -> Directo al Menú
-            val intent = Intent(this, MainMenu::class.java).apply {
-                putExtra("STEAM_ID", steamId)
-                putExtra("STEAM_NAME", steamName)
-                putExtra("STEAM_AVATAR", steamAvatar)
-                // Esto borra el historial para que no pueda volver atrás al Splash ///IA
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            startActivity(intent)
-            finish()
+        // UNO O EL OTRO
+        if (firebaseUser != null || steamId != null) {
+            // Si cualquiera de los dos existe, vamos al menú
+            redirigirUsuario()
         } else {
-            // Tiene Firebase pero NO tiene datos de Steam -> A Login de Steam
-            val intent = Intent(this, SteamLogin::class.java)
-            startActivity(intent)
-            finish()
+            // Si no hay nadie, vamos al Login para que elija
+            // Un pequeño delay para que se vea el Splash
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }, 2000)
         }
+
+
+        analytics.logEvent("StartEvent", bundle)
+    }
+
+    //Ayudado con IA
+    private fun redirigirUsuario() {
+        val intent = Intent(this, MainMenu::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
 
