@@ -167,14 +167,15 @@ class SkinDetailActivity : AppCompatActivity() {
 
     private fun actualizarIcono() {
         if (isFavorite) {
-            // Cambia este icono por uno relleno (ej: R.drawable.ic_heart_filled)
-            btnFavorite.setImageResource(android.R.drawable.btn_star_big_on)
+            // Usa tu nuevo icono relleno
+            btnFavorite.setImageResource(R.drawable.ic_star_filled)
         } else {
-            // Cambia este icono por uno vacío (ej: R.drawable.ic_heart_outline)
-            btnFavorite.setImageResource(android.R.drawable.btn_star_big_off)
+            // Usa tu nuevo icono de borde
+            btnFavorite.setImageResource(R.drawable.ic_star_border)
         }
     }
 
+    //IA
     // Firebase no permite guardar claves con symbols como ".", "#", "$", "[", "]"
     // Las skins de CS2 tienen "|" (ej: AK-47 | Redline), así que lo limpiamos
     private fun sanitizeKey(original: String): String {
