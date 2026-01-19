@@ -8,4 +8,10 @@
         android:checkable="true"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_favorites"
+        android:title="Mis Favoritos"
+        android:icon="@android:drawable/btn_star"
+        app:showAsAction="never" />
+
 </menu>

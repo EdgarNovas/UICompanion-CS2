@@ -22,7 +22,7 @@ class SkinDetailActivity : AppCompatActivity() {
     // Favoritos
     private lateinit var btnFavorite: FloatingActionButton
     private var isFavorite = false
-    private val database = FirebaseDatabase.getInstance().getReference("usuarios")
+    private val database = FirebaseDatabase.getInstance("https://cscompanion-ba26b-default-rtdb.europe-west1.firebasedatabase.app/").getReference("usuarios")
     private var myUserId: String = ""
 
 

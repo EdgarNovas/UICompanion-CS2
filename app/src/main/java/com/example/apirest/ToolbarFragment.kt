@@ -1,5 +1,6 @@
 package com.example.apirest
 
+import CS2API.FavoriteItem
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,10 +10,16 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class ToolbarFragment : Fragment() {
-
+    private val databaseUrl = "https://cscompanion-ba26b-default-rtdb.europe-west1.firebasedatabase.app/"
     // Usamos '?' para evitar errores de lateinit
     private var toolbarTitle: TextView? = null
     private var menuButton: ImageButton? = null
@@ -52,29 +59,25 @@ class ToolbarFragment : Fragment() {
     }
 
     private fun mostrarMenuOpciones(view: View) {
-        // Crear el PopupMenu anclado al botón de ajustes
         val popup = PopupMenu(requireContext(), view)
-        popup.menuInflater.inflate(R.menu.toolbar_menu, popup.menu) // Inflamos el XML del paso 1
+        popup.menuInflater.inflate(R.menu.toolbar_menu, popup.menu)
 
-        // Averiguar estado actual para marcar el Checkbox
+        // Estado Dark Mode
         val sharedPref = requireContext().getSharedPreferences("AppConfig", Context.MODE_PRIVATE)
         val isDarkMode = sharedPref.getBoolean("dark_mode", true)
-
-        // Buscamos el item del menú y le ponemos el check si corresponde
         popup.menu.findItem(R.id.action_dark_mode).isChecked = isDarkMode
 
-        //Qué pasa al hacer click en una opcion
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                // CASO 1: CLICK EN FAVORITOS
+                R.id.action_favorites -> {
+                    mostrarDialogoFavoritos()
+                    true
+                }
+                // CASO 2: CLICK EN MODO OSCURO
                 R.id.action_dark_mode -> {
-
-                    // Si estaba oscuro ahora será claro
                     val nuevoEstado = !isDarkMode
-
-                    // Guardar
                     sharedPref.edit().putBoolean("dark_mode", nuevoEstado).apply()
-
-                    // Aplicar
                     if (nuevoEstado) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     } else {
@@ -85,8 +88,70 @@ class ToolbarFragment : Fragment() {
                 else -> false
             }
         }
-
         popup.show()
+    }
+
+    //IA
+    private fun mostrarDialogoFavoritos() {
+        val context = requireContext() // En fragment usamos requireContext()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (userId == null) {
+            Toast.makeText(context, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Mis Favoritos")
+
+        // 1. Crear Lista (RecyclerView)
+        val recycler = RecyclerView(context)
+        recycler.layoutManager = LinearLayoutManager(context)
+        recycler.setPadding(30, 30, 30, 30)
+
+        val listaFavoritos = mutableListOf<FavoriteItem>()
+
+        // 2. Adaptador con borrado
+        val adapter = FavoritesAdapter(listaFavoritos) { itemABorrar ->
+            // Borrar de Firebase
+            FirebaseDatabase.getInstance(databaseUrl)
+                .getReference("usuarios")
+                .child(userId)
+                .child("favoritos")
+                .child(itemABorrar.id)
+                .removeValue()
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Eliminado", Toast.LENGTH_SHORT).show()
+                    listaFavoritos.remove(itemABorrar)
+                    recycler.adapter?.notifyDataSetChanged()
+                }
+        }
+        recycler.adapter = adapter
+        builder.setView(recycler)
+
+        // 3. Cargar datos de Firebase
+        val ref = FirebaseDatabase.getInstance(databaseUrl)
+            .getReference("usuarios")
+            .child(userId)
+            .child("favoritos")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                listaFavoritos.clear()
+                for (child in snapshot.children) {
+                    val item = child.getValue(FavoriteItem::class.java)
+                    if (item != null) {
+                        listaFavoritos.add(item)
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            } else {
+                Toast.makeText(context, "No tienes favoritos aún", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        builder.setPositiveButton("Cerrar", null)
+        builder.show()
     }
 
 
