@@ -2,6 +2,7 @@ package com.example.apirest
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -18,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var btnRegister : Button
     private lateinit var btnLogin : Button
+    private lateinit var btnSteam :  Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,47 +30,66 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         btnRegister = findViewById(R.id.btnRegister)
         btnLogin = findViewById(R.id.btnLogin)
+        btnSteam = findViewById(R.id.btn_login_steam)
 
-        btnRegister.setOnClickListener { Register() }
-        btnLogin.setOnClickListener { Login() }
+        // STEAM
+        btnSteam.setOnClickListener {
+            val intent = Intent(this, SteamLogin::class.java)
+            startActivity(intent)
+        }
+
+        btnRegister.setOnClickListener { register() }
+        btnLogin.setOnClickListener { login() }
     }
 
 
-    private fun Register(){
+    private fun register(){
         val email = emailField.text.toString()
-        val password = passwordField.text.toString()
-        auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this) {
-                    task ->
-                if(task.isSuccessful){
-                    Toast.makeText(this,"Registro correcto", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, SteamLogin::class.java)
-                    startActivity(intent)
-                }else{
-                    Toast.makeText(this,"Error en el registro: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+        val pass = passwordField.text.toString()
+
+        if (email.isNotEmpty() && pass.isNotEmpty()) {
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pass)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Usuario creado.", Toast.LENGTH_SHORT).show()
+                        irAlMenu()
+                    } else {
+                        Toast.makeText(this, "Error al crear: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+        } else {
+            Toast.makeText(this, "Introduce email y contraseña", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
-    private fun Login(){
+    private fun login() {
         val email = emailField.text.toString()
-        val password = passwordField.text.toString()
+        val pass = passwordField.text.toString()
 
-        auth.signInWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this) {
-                    task ->
-                if(task.isSuccessful){
-                    val user = auth.currentUser
-                    val userID = user?.uid
-
-                    Toast.makeText(this,"Registro correcto", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, SteamLogin::class.java)
-                    startActivity(intent)
-                }else{
-                    Toast.makeText(this,"Error en el registro: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+        if (email.isNotEmpty() && pass.isNotEmpty()) {
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pass)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        irAlMenu()
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Error: ${task.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
+        } else {
+            Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
+        }
+    }
 
+    private fun irAlMenu() {
+        val intent = Intent(this, MainMenu::class.java)
+        //Con esto no puede volver hacia atras
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }
