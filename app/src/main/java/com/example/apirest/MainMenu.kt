@@ -10,11 +10,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -28,105 +25,111 @@ class MainMenu : AppCompatActivity() {
     private lateinit var txtNombre: TextView
     private lateinit var imgAvatar: ImageView
 
-    private val database = FirebaseDatabase.getInstance().getReference("usuarios")
+    private val database = FirebaseDatabase.getInstance("https://cscompanion-ba26b-default-rtdb.europe-west1.firebasedatabase.app/")
+        .getReference("usuarios")
     private var myUserId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
-        //Inicializar Vistas
+        // Inicializar
         txtNombre = findViewById(R.id.text_name)
         imgAvatar = findViewById(R.id.user_avatar_image)
         btnEditar = findViewById(R.id.btn_editar_perfil)
         btnCloseSesion = findViewById(R.id.btn_cerrar_sesion)
         btnSalirApp = findViewById(R.id.btn_salir)
 
-        // 2. Toolbar
+        // Toolbar
         val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container) as? ToolbarFragment
         toolbarFragment?.let {
             it.setToolbarTitle(getString(R.string.nav_profile_title))
-            // El botón del toolbar también sale de la app
             it.setMenuButtonAction { salirDeAplicacion() }
         }
 
-        // CALCULAR ID ÚNICO
+        // ID
         myUserId = obtenerMiIdentificador()
 
-        // CARGAR PERFIL
+        //PERFIL
         cargarPerfilInteligente()
 
+        // Listeners
+        btnEditar.setOnClickListener { mostrarDialogoEditar() }
+        btnCloseSesion.setOnClickListener { cerrarSesion() }
+        btnSalirApp.setOnClickListener { salirDeAplicacion() }
 
-        btnEditar.setOnClickListener {
-            mostrarDialogoEditar()
-        }
-
-        btnCloseSesion.setOnClickListener {
-            cerrarSesion()
-        }
-
-        btnSalirApp.setOnClickListener {
-            salirDeAplicacion()
-        }
-
-        // Navegación
+        // Navegacion
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         BottomNavigation(this).setup(bottomNavView, R.id.nav_profile)
     }
 
-
-    //
     private fun obtenerMiIdentificador(): String {
         //  Firebase
         val userFirebase = FirebaseAuth.getInstance().currentUser
         if (userFirebase != null) {
             return userFirebase.uid
         }
-
         // Steam
         val sharedPref = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
         val steamId = sharedPref.getString("steam_id", null)
         if (steamId != null) {
-            return steamId
+            return "steam_$steamId"
         }
-
-        //Error
         return "error_no_id"
     }
 
-
     private fun cargarPerfilInteligente() {
-        //Preguntar a Realtime Database si hay datos personalizados
+        // Intentamos leer de la base de datos
         database.child(myUserId).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
-                // ¡HAY DATOS PERSONALIZADOS!
-                val nombreGuardado = snapshot.child("nombre").value.toString()
-                val avatarGuardado = snapshot.child("avatarUrl").value.toString()
+                // EXISTE EN LA NUBE
+                val nombre = snapshot.child("nombre").getValue(String::class.java)
+                val avatar = snapshot.child("avatarUrl").getValue(String::class.java)
 
-                actualizarUI(nombreGuardado, avatarGuardado)
-                FirebaseCrashlytics.getInstance().log("Perfil cargado desde Database: $nombreGuardado")
+                actualizarUI(nombre, avatar)
+
             } else {
-                // NO HAY DATOS EN DB -> Cargar los originales (Steam/Google)
-                cargarDatosOriginales()
+                // NO EXISTE
+                crearUsuarioNuevoEnNube()
             }
         }.addOnFailureListener {
-            // Si falla internet, intentamos cargar los originales
-            cargarDatosOriginales()
+            // ERROR/OFFLINE
+            mostrarDatosTemporalesOffline()
+            Toast.makeText(this, "Modo Offline: No se pudo conectar a la nube", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun cargarDatosOriginales() {
+    // Esta función solo se llama si el usuario NO existe en la DB
+    private fun crearUsuarioNuevoEnNube() {
+        var nombreInicial = "Usuario"
+        var avatarInicial = ""
+
         val userFirebase = FirebaseAuth.getInstance().currentUser
         if (userFirebase != null) {
-            val nombre = userFirebase.displayName ?: "Usuario Firebase"
-            val foto = userFirebase.photoUrl.toString()
-            actualizarUI(nombre, foto)
+            val email = userFirebase.email
+            nombreInicial = email?.substringBefore("@") ?: "Usuario Nuevo"
         } else {
             val sharedPref = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
-            val steamName = sharedPref.getString("steam_name", "Usuario Steam")
-            val steamAvatar = sharedPref.getString("steam_avatar", "")
-            actualizarUI(steamName, steamAvatar)
+            nombreInicial = sharedPref.getString("steam_name", "Usuario Steam") ?: "Usuario Steam"
+            avatarInicial = sharedPref.getString("steam_avatar", "") ?: ""
         }
+
+        // Guardamos en la nube
+        guardarEnBaseDeDatos(nombreInicial, avatarInicial)
+    }
+
+    // Esta función SOLO muestra datos visuales sin tocar la DB (Protección contra borrado)
+    private fun mostrarDatosTemporalesOffline() {
+        var nombreInicial = "Cargando..."
+        val userFirebase = FirebaseAuth.getInstance().currentUser
+
+        if (userFirebase != null) {
+            nombreInicial = userFirebase.email?.substringBefore("@") ?: "Usuario"
+        } else {
+            val sharedPref = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
+            nombreInicial = sharedPref.getString("steam_name", "Usuario Steam") ?: "Usuario Steam"
+        }
+        actualizarUI(nombreInicial, "")
     }
 
     private fun actualizarUI(nombre: String?, urlImagen: String?) {
@@ -135,19 +138,19 @@ class MainMenu : AppCompatActivity() {
         if (!urlImagen.isNullOrEmpty()) {
             Glide.with(this)
                 .load(urlImagen)
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .error(R.drawable.ic_launcher_foreground)
+                .placeholder(R.drawable.ic_launcher_foreground) // Mientras carga
+                .error(R.drawable.ic_launcher_foreground) // Si falla
                 .circleCrop()
                 .into(imgAvatar)
+        } else {
+            imgAvatar.setImageResource(R.drawable.ic_launcher_foreground)
         }
     }
 
-    //IA
     private fun mostrarDialogoEditar() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Editar Perfil")
 
-        // Crear layout del diálogo
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
         layout.setPadding(50, 40, 50, 10)
@@ -181,23 +184,19 @@ class MainMenu : AppCompatActivity() {
             "avatarUrl" to url
         )
 
-        // Guardamos en: usuarios -> [TU_ID] -> {nombre, avatarUrl}
         database.child(myUserId).setValue(mapaDatos)
             .addOnSuccessListener {
-                Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show()
-                // Recargamos la UI directamente
+                Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_SHORT).show()
                 actualizarUI(nombre, url)
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Error al guardar: ${it.message}", Toast.LENGTH_SHORT).show()
-                FirebaseCrashlytics.getInstance().recordException(it)
             }
     }
 
     private fun cerrarSesion() {
         FirebaseAuth.getInstance().signOut()
         getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE).edit().clear().apply()
-
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
@@ -207,5 +206,4 @@ class MainMenu : AppCompatActivity() {
     private fun salirDeAplicacion() {
         finishAffinity()
     }
-
 }

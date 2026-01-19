@@ -1,17 +1,37 @@
 package com.example.apirest
 
+import CS2API.FavoriteItem
+import android.content.Context
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.database.FirebaseDatabase
 
 class SkinDetailActivity : AppCompatActivity() {
+
+    // Favoritos
+    private lateinit var btnFavorite: FloatingActionButton
+    private var isFavorite = false
+    private val database = FirebaseDatabase.getInstance("https://cscompanion-ba26b-default-rtdb.europe-west1.firebasedatabase.app/").getReference("usuarios")
+    private var myUserId: String = ""
+
+
+    //Funciones
+
+    private var skinName: String = ""
+    private var skinImage: String = ""
+    private var skinCategory: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,6 +42,8 @@ class SkinDetailActivity : AppCompatActivity() {
             insets
         }
 
+
+
         //Botón atrás
         val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container) as? ToolbarFragment
         toolbarFragment?.let {
@@ -29,12 +51,14 @@ class SkinDetailActivity : AppCompatActivity() {
             it.setMenuButtonAction { finish() } // Vuelve atrás
         }
 
+        //Ayuda IA para pasarlo bien sin errores
         // Recibir datos del Intent
         val name = intent.getStringExtra("EXTRA_NAME") ?: "Sin Nombre"
         val image = intent.getStringExtra("EXTRA_IMAGE")
         val category = intent.getStringExtra("EXTRA_CATEGORY") ?: "General"
         val description = intent.getStringExtra("EXTRA_DESC") ?: "No hay descripción disponible para este objeto."
         val price = intent.getStringExtra("EXTRA_PRICE")
+
 
         if (name == null || image == null) {
             // Esto no debería pasar
@@ -51,10 +75,16 @@ class SkinDetailActivity : AppCompatActivity() {
         val tvCategory = findViewById<TextView>(R.id.detail_category)
         val tvDesc = findViewById<TextView>(R.id.detail_description)
         val tvPrice = findViewById<TextView>(R.id.detail_price)
+        btnFavorite = findViewById(R.id.btn_favorite)
 
         tvName.text = name
         tvCategory.text = category
         tvDesc.text = description
+
+        skinName = name
+        skinImage = image
+        skinCategory = category
+
 
         if (!price.isNullOrEmpty()) {
             tvPrice.text = price
@@ -67,6 +97,96 @@ class SkinDetailActivity : AppCompatActivity() {
             .load(image)
             .placeholder(android.R.drawable.ic_menu_gallery)
             .into(imgDetail)
+
+        // ID del usuario
+        myUserId = obtenerMiIdentificador()
+
+        // Comprobar si ya es favorito
+        checkIfFavorite()
+
+
+        btnFavorite.setOnClickListener {
+            toggleFavorite()
+        }
+
     }
 
+
+    private fun obtenerMiIdentificador(): String {
+        // Firebase
+        val userFirebase = FirebaseAuth.getInstance().currentUser
+        if (userFirebase != null) {
+            return userFirebase.uid
+        }
+        // 2. Intentamos Steam
+        val sharedPref = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
+        return sharedPref.getString("steam_id", "anonimo") ?: "anonimo"
+    }
+
+    private fun checkIfFavorite() {
+        val idSeguro = sanitizeKey(skinName)
+        // Ruta: usuarios -> ID -> favoritos -> NOMBRE_SKIN
+        database.child(myUserId).child("favoritos").child(idSeguro).get()
+            .addOnSuccessListener { snapshot ->
+                isFavorite = snapshot.exists()
+                actualizarIcono()
+            }
+    }
+
+    private fun toggleFavorite() {
+        val idSeguro = sanitizeKey(skinName)
+        val ref = database.child(myUserId).child("favoritos").child(idSeguro)
+
+        // Deshabilitamos el botón un momento para evitar doble click rápido
+        btnFavorite.isEnabled = false
+
+        if (isFavorite) {
+            // ELIMINAR
+            ref.removeValue().addOnSuccessListener {
+                isFavorite = false
+                actualizarIcono()
+                Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+                btnFavorite.isEnabled = true
+            }.addOnFailureListener { btnFavorite.isEnabled = true }
+        } else {
+            // AÑADIR
+            // Creamos el objeto a guardar
+            val item = FavoriteItem(idSeguro, skinName, skinImage, skinCategory)
+
+            ref.setValue(item).addOnSuccessListener {
+                isFavorite = true
+                actualizarIcono()
+                Toast.makeText(this, "Añadido a favoritos", Toast.LENGTH_SHORT).show()
+                btnFavorite.isEnabled = true
+            }.addOnFailureListener {
+                Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
+                btnFavorite.isEnabled = true
+            }
+        }
+    }
+
+    private fun actualizarIcono() {
+        if (isFavorite) {
+            // Usa tu nuevo icono relleno
+            btnFavorite.setImageResource(R.drawable.ic_star_filled)
+        } else {
+            // Usa tu nuevo icono de borde
+            btnFavorite.setImageResource(R.drawable.ic_star_border)
+        }
+    }
+
+    //IA
+    // Firebase no permite guardar claves con symbols como ".", "#", "$", "[", "]"
+    // Las skins de CS2 tienen "|" (ej: AK-47 | Redline), así que lo limpiamos
+    private fun sanitizeKey(original: String): String {
+        return original.replace(".", "")
+            .replace("#", "")
+            .replace("$", "")
+            .replace("[", "")
+            .replace("]", "")
+            .replace("/", "")
+            .replace("|", "") // Quitamos la barra vertical típica de skins
+            .trim()
+    }
 }
+
