@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.apirest.R
 
-class SkinAdapter(private val skins: List<CS2Skin>) : RecyclerView.Adapter<SkinAdapter.ViewHolder>() {
+class SkinAdapter(private var skins: List<CS2Skin>) : RecyclerView.Adapter<SkinAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val img: ImageView = view.findViewById(R.id.imgSkin)
@@ -49,4 +49,9 @@ class SkinAdapter(private val skins: List<CS2Skin>) : RecyclerView.Adapter<SkinA
     }
 
     override fun getItemCount() = skins.size
+
+    fun actualizarLista(nuevaLista: List<CS2Skin>) {
+        this.skins = nuevaLista
+        notifyDataSetChanged() // Esto avisa a Android de que repinte la lista
+    }
 }

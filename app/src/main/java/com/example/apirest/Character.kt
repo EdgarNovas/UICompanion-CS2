@@ -9,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Toast
 import com.example.apirest.R
 import android.content.Intent
-
+import androidx.appcompat.widget.SearchView
 import CS2API.AgentAdapter
 import CS2API.CS2Agent
 import CS2API.CS2ApiInstance
@@ -25,6 +25,10 @@ class Character: AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AgentAdapter
+
+    private lateinit var searchView: SearchView
+    private var listaCompleta: List<CS2Agent> = emptyList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +54,45 @@ class Character: AppCompatActivity() {
 
         recyclerView = findViewById(R.id.agents_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columnas
+        searchView = findViewById(R.id.search_view_character)
 
+        setupBuscador()
+
+        // Llamar a la API
         obtenerAgentes()
 
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         BottomNavigation(this).setup(bottomNavView, R.id.nav_characters)
     }
 
+
+    private fun setupBuscador() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean { return false }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarLista(newText)
+                return true
+            }
+        })
+    }
+
+    private fun filtrarLista(texto: String?) {
+        // Seguridad: si no hay datos o adapter, no hacemos nada
+        if (listaCompleta.isEmpty()) return
+        if (!::adapter.isInitialized) return
+
+        if (texto.isNullOrEmpty()) {
+            // Borró texto -> Restauramos la lista completa
+            adapter.actualizarLista(listaCompleta)
+        } else {
+            // Escribió -> Filtramos sobre la lista completa
+            val listaFiltrada = listaCompleta.filter { agent ->
+                agent.name?.contains(texto, ignoreCase = true) == true
+            }
+            adapter.actualizarLista(listaFiltrada)
+        }
+    }
 
     private fun obtenerAgentes() {
         CS2ApiInstance.api.getAgents().enqueue(object : retrofit2.Callback<List<CS2Agent>> {
@@ -65,9 +101,9 @@ class Character: AppCompatActivity() {
                     val agentsList = response.body() ?: emptyList()
 
                     //Filtrar para quitar los que no tengan imagen
-                    val validAgents = agentsList.filter { !it.image.isNullOrEmpty() }
+                    listaCompleta = agentsList.filter { !it.image.isNullOrEmpty() }
 
-                    adapter = AgentAdapter(validAgents)
+                    adapter = AgentAdapter(listaCompleta)
                     recyclerView.adapter = adapter
                 } else {
                     FirebaseCrashlytics.getInstance().log( "Error en respuesta: ${response.code()}")

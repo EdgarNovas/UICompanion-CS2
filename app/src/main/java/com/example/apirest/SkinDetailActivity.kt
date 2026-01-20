@@ -51,7 +51,7 @@ class SkinDetailActivity : AppCompatActivity() {
             it.setMenuButtonAction { finish() } // Vuelve atrás
         }
 
-        //Ayuda IA para pasarlo bien sin errores
+        // Ayuda IA para pasarlo bien sin errores
         // Recibir datos del Intent
         val name = intent.getStringExtra("EXTRA_NAME") ?: "Sin Nombre"
         val image = intent.getStringExtra("EXTRA_IMAGE")
@@ -149,7 +149,6 @@ class SkinDetailActivity : AppCompatActivity() {
                 btnFavorite.isEnabled = true
             }.addOnFailureListener { btnFavorite.isEnabled = true }
         } else {
-            // AÑADIR
             // Creamos el objeto a guardar
             val item = FavoriteItem(idSeguro, skinName, skinImage, skinCategory)
 

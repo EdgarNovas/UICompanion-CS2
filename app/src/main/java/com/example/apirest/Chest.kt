@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,6 +25,10 @@ class Chest: AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CaseAdapter
 
+    private lateinit var searchView: SearchView
+
+    private var listaCompleta: List<CS2Case> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,17 +43,20 @@ class Chest: AppCompatActivity() {
                 as? ToolbarFragment
 
         toolbarFragment?.let {
-            it.setToolbarTitle("Chests")
+            //it.setToolbarTitle("Chests")
             it.setToolbarTitle(getString(R.string.nav_chests_title))
-
             it.setMenuButtonAction {
                 Toast.makeText(this, "Abrir Menú de Cofres", Toast.LENGTH_SHORT).show()
             }
         }
 
-        //Inicializar RecyclerView con 2 columnas (como tu GridLayout anterior)
+        // RecyclerView con 2 columnas
         recyclerView = findViewById(R.id.cases_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+        searchView = findViewById(R.id.search_view_cases)
+
+        // Configurar Buscador
+        setupBuscador()
 
         // Llamar a la API
         obtenerDatosDeCofres()
@@ -57,8 +65,40 @@ class Chest: AppCompatActivity() {
         BottomNavigation(this).setup(bottomNavView, R.id.nav_chests)
     }
 
-    private fun obtenerDatosDeCofres() {
 
+    private fun setupBuscador() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarLista(newText)
+                return true
+            }
+        })
+    }
+
+    private fun filtrarLista(texto: String?) {
+        // Si no ha cargado la API, salimos
+        if (listaCompleta.isEmpty()) return
+
+        // Si el adaptador no está listo, salimos (seguridad)
+        if (!::adapter.isInitialized) return
+
+        if (texto.isNullOrEmpty()) {
+            // Texto borrado -> Mostramos todo
+            adapter.actualizarLista(listaCompleta)
+        } else {
+            // Texto escrito -> Filtramos la lista completa
+            val listaFiltrada = listaCompleta.filter { item ->
+                item.name?.contains(texto, ignoreCase = true) == true
+            }
+            adapter.actualizarLista(listaFiltrada)
+        }
+    }
+
+    private fun obtenerDatosDeCofres() {
         CS2ApiInstance.api.getCrates().enqueue(object : retrofit2.Callback<List<CS2Case>> {
             override fun onResponse(call: Call<List<CS2Case>>, response: Response<List<CS2Case>>) {
                 if (response.isSuccessful) {
@@ -66,20 +106,19 @@ class Chest: AppCompatActivity() {
 
                     Log.d("API_CS2", "Recibidos ${todosLosItems.size} items totales")
 
-                    // Filtramos solo los que tienen "Case" en el nombre y tienen imagen
-                    val casesFiltradas = todosLosItems.filter {
+
+                    listaCompleta = todosLosItems.filter {
                         (it.name?.contains("Case", ignoreCase = true) == true) &&
                                 !it.image.isNullOrEmpty()
                     }
 
-                    Log.d("API_CS2", "Filtrados ${casesFiltradas.size} cofres")
+                    Log.d("API_CS2", "Filtrados ${listaCompleta.size} cofres")
 
-                    // Asignamos al adaptador
-                    adapter = CaseAdapter(casesFiltradas)
+                    // Inicializamos el adaptador con la lista global
+                    adapter = CaseAdapter(listaCompleta)
                     recyclerView.adapter = adapter
 
                 } else {
-
                     FirebaseCrashlytics.getInstance().log( "Error en respuesta: ${response.code()}")
                     Toast.makeText(applicationContext, "Error API: ${response.code()}", Toast.LENGTH_LONG).show()
                 }
