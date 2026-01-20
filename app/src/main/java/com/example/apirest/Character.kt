@@ -20,7 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
-
+import android.view.View
+import android.widget.ProgressBar
 class Character: AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -28,6 +29,7 @@ class Character: AppCompatActivity() {
 
     private lateinit var searchView: SearchView
     private var listaCompleta: List<CS2Agent> = emptyList()
+    private lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,10 @@ class Character: AppCompatActivity() {
         recyclerView = findViewById(R.id.agents_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columnas
         searchView = findViewById(R.id.search_view_character)
+
+        progressBar = findViewById(R.id.loading_spinner)
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
 
         setupBuscador()
 
@@ -98,6 +104,8 @@ class Character: AppCompatActivity() {
         CS2ApiInstance.api.getAgents().enqueue(object : retrofit2.Callback<List<CS2Agent>> {
             override fun onResponse(call: Call<List<CS2Agent>>, response: Response<List<CS2Agent>>) {
                 if (response.isSuccessful) {
+                    progressBar.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
                     val agentsList = response.body() ?: emptyList()
 
                     //Filtrar para quitar los que no tengan imagen

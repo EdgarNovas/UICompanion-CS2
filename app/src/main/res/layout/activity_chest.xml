@@ -26,12 +26,27 @@
         app:queryHint="Buscar caja..."
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cases_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="603dp"
         android:layout_weight="1"
         android:padding="8dp" />
+
+        <ProgressBar
+            android:id="@+id/loading_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/white" />
+
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

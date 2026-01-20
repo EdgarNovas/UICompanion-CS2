@@ -19,6 +19,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
+import android.view.View
+import android.widget.ProgressBar
 
 class Chest: AppCompatActivity() {
 
@@ -29,6 +31,8 @@ class Chest: AppCompatActivity() {
 
     private var listaCompleta: List<CS2Case> = emptyList()
 
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,6 +42,8 @@ class Chest: AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
 
         val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container)
                 as? ToolbarFragment
@@ -54,6 +60,10 @@ class Chest: AppCompatActivity() {
         recyclerView = findViewById(R.id.cases_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         searchView = findViewById(R.id.search_view_cases)
+
+        progressBar = findViewById(R.id.loading_spinner)
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
 
         // Configurar Buscador
         setupBuscador()
@@ -102,6 +112,8 @@ class Chest: AppCompatActivity() {
         CS2ApiInstance.api.getCrates().enqueue(object : retrofit2.Callback<List<CS2Case>> {
             override fun onResponse(call: Call<List<CS2Case>>, response: Response<List<CS2Case>>) {
                 if (response.isSuccessful) {
+                    progressBar.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
                     val todosLosItems = response.body() ?: emptyList()
 
                     Log.d("API_CS2", "Recibidos ${todosLosItems.size} items totales")
