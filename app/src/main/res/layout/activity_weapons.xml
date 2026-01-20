@@ -17,13 +17,27 @@
         android:name="com.example.apirest.ToolbarFragment"
         tools:layout="@layout/fragment_toolbar" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categories_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="8dp"
         android:clipToPadding="false" />
+
+        <ProgressBar
+            android:id="@+id/loading_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/white" />
+    </FrameLayout>
 
     <!--Echo con IA -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

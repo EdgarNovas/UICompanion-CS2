@@ -18,10 +18,15 @@ import androidx.activity.enableEdgeToEdge
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import retrofit2.Call
 import retrofit2.Response
+import android.view.View
+import android.widget.ProgressBar
 
 class Weapons: AppCompatActivity() {
 
     val numOfRows : Int = 2
+
+    private lateinit var progressBar: ProgressBar
+
     private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,10 @@ class Weapons: AppCompatActivity() {
         recyclerView = findViewById(R.id.categories_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, numOfRows)
 
+        progressBar = findViewById(R.id.loading_spinner)
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+
         //generar botones
         generarCategoriasAutomaticamente()
 
@@ -63,6 +72,8 @@ class Weapons: AppCompatActivity() {
         CS2ApiInstance.api.getSkins().enqueue(object : retrofit2.Callback<List<CS2Skin>> {
             override fun onResponse(call: Call<List<CS2Skin>>, response: Response<List<CS2Skin>>) {
                 if (response.isSuccessful) {
+                    progressBar.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
                     val allSkins = response.body() ?: emptyList()
 
                     val categoriasUnicas = allSkins
