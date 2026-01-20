@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.apirest.R
 
-class AgentAdapter(private val agents: List<CS2Agent>) : RecyclerView.Adapter<AgentAdapter.ViewHolder>() {
+class AgentAdapter(private var agents: List<CS2Agent>) : RecyclerView.Adapter<AgentAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val img: ImageView = view.findViewById(R.id.imgAgent)
@@ -51,4 +51,9 @@ class AgentAdapter(private val agents: List<CS2Agent>) : RecyclerView.Adapter<Ag
     }
 
     override fun getItemCount() = agents.size
+
+    fun actualizarLista(nuevaLista: List<CS2Agent>) {
+        this.agents = nuevaLista
+        notifyDataSetChanged()
+    }
 }

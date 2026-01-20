@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import CS2API.CS2ApiInstance
 import CS2API.SKINSAPI.CS2Skin
 import CS2API.SKINSAPI.SkinAdapter
+import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -20,36 +21,68 @@ class SkinListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var categoryToFilter: String
 
+    private lateinit var adapter: SkinAdapter
+    private lateinit var searchView: SearchView
+
+    private var listaCompleta: List<CS2Skin> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_skin_list)
 
+        //Inicializar vistas
+        recyclerView = findViewById(R.id.skins_recycler_view)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        searchView = findViewById(R.id.search_view_skins)
 
-        //Recibir la categoría del arma
+        //  Recibir categoría
         categoryToFilter = intent.getStringExtra("CATEGORY_NAME") ?: ""
-        title = "Skins de $categoryToFilter"
 
         val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container) as? ToolbarFragment
         toolbarFragment?.let {
-            // Ponemos el nombre de la categoría como título
             it.setToolbarTitle(categoryToFilter)
-
-            // Configuramos el botón del menú para que haga "Atrás"
-
-            it.setMenuButtonAction {
-                finish()
-            }
+            it.setMenuButtonAction { finish() }
         }
 
-        recyclerView = findViewById(R.id.skins_recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        // 3. Configurar el "oído" del buscador
+        setupBuscador()
 
+        // 4. Llamar a internet para llenar la lista
         obtenerSkinsFiltradas()
 
-
+        // Navegación inferior
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.selectedItemId = R.id.nav_weapons
+    }
+
+    private fun setupBuscador() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false // No hacemos nada al dar Enter, buscamos al escribir
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filtrarLista(newText)
+                return true
+            }
+        })
+    }
+
+    private fun filtrarLista(texto: String?) {
+        // Si no hemos descargado nada aún, salimos
+        if (listaCompleta.isEmpty()) return
+
+        if (texto.isNullOrEmpty()) {
+            // Si el usuario borra el texto, mostramos la LISTA COMPLETA original
+            adapter.actualizarLista(listaCompleta)
+        } else {
+            // Si escribe, filtramos sobre la LISTA COMPLETA buscando coincidencias
+            val listaFiltrada = listaCompleta.filter { skin ->
+                skin.name?.contains(texto, ignoreCase = true) == true
+            }
+            adapter.actualizarLista(listaFiltrada)
+        }
     }
 
     private fun obtenerSkinsFiltradas() {
@@ -58,19 +91,21 @@ class SkinListActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val allSkins = response.body() ?: emptyList()
 
-
-
-                    val filteredList = allSkins.filter { skin ->
+                    // CORRECCIÓN CLAVE AQUÍ:
+                    // 1. Guardamos los datos en la variable GLOBAL 'listaCompleta'
+                    listaCompleta = allSkins.filter { skin ->
                         skin.category?.name?.contains(categoryToFilter, ignoreCase = true) == true
-
                     }
 
-                    recyclerView.adapter = SkinAdapter(filteredList)
+                    // 2. Inicializamos la variable GLOBAL 'adapter'
+                    adapter = SkinAdapter(listaCompleta)
 
-                    if (filteredList.isEmpty()) {
+                    // 3. Asignamos ese adaptador al Recycler
+                    recyclerView.adapter = adapter
+
+                    if (listaCompleta.isEmpty()) {
                         Toast.makeText(applicationContext, "No se encontraron skins de tipo $categoryToFilter", Toast.LENGTH_SHORT).show()
                     }
-
                 }
             }
 

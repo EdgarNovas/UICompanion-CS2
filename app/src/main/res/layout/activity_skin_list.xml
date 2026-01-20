@@ -13,6 +13,17 @@
         android:name="com.example.apirest.ToolbarFragment"
         tools:layout="@layout/fragment_toolbar" />
 
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view_skins"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:background="@drawable/rounded_background_blue"
+        app:iconifiedByDefault="false"
+        app:queryHint="Buscar skin..."
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/skins_recycler_view"
         android:layout_width="match_parent"
