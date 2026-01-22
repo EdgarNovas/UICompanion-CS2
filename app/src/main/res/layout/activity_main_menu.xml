@@ -85,6 +85,23 @@
         android:paddingTop="20dp">
 
         <Button
+            android:id="@+id/btnChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chat Global"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_background_blue"
+            app:backgroundTint="@null"
+            android:textAllCaps="false"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:elevation="5dp"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
             android:id="@+id/btn_cerrar_sesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

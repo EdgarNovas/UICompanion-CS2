@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase
 class MainMenu : AppCompatActivity() {
     private lateinit var btnCloseSesion: Button
     private lateinit var btnSalirApp: Button
+
+    private lateinit var btnChat : Button
     private lateinit var btnEditar: ImageButton
     private lateinit var txtNombre: TextView
     private lateinit var imgAvatar: ImageView
@@ -39,6 +41,8 @@ class MainMenu : AppCompatActivity() {
         btnEditar = findViewById(R.id.btn_editar_perfil)
         btnCloseSesion = findViewById(R.id.btn_cerrar_sesion)
         btnSalirApp = findViewById(R.id.btn_salir)
+        btnChat = findViewById(R.id.btnChat)
+
 
         // Toolbar
         val toolbarFragment = supportFragmentManager.findFragmentById(R.id.toolbar_fragment_container) as? ToolbarFragment
@@ -57,6 +61,7 @@ class MainMenu : AppCompatActivity() {
         btnEditar.setOnClickListener { mostrarDialogoEditar() }
         btnCloseSesion.setOnClickListener { cerrarSesion() }
         btnSalirApp.setOnClickListener { salirDeAplicacion() }
+        btnChat.setOnClickListener { mostrarChat()  }
 
         // Navegacion
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -147,6 +152,10 @@ class MainMenu : AppCompatActivity() {
         }
     }
 
+    private fun mostrarChat()
+    {
+        startActivity(Intent(this, ChatActivity::class.java))
+    }
     private fun mostrarDialogoEditar() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Editar Perfil")
