@@ -65,8 +65,8 @@
 
             <ImageButton
                 android:id="@+id/btn_editar_perfil"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@android:drawable/ic_menu_edit"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:tint="@android:color/white"
@@ -91,6 +91,7 @@
             android:text="Chat Global"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:textColor="#FFFFFF"
             android:background="@drawable/rounded_background_blue"
             app:backgroundTint="@null"
             android:textAllCaps="false"

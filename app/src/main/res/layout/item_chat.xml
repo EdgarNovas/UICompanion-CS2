@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Usuario"
             android:textStyle="bold"
-            android:textColor="@color/design_default_color_primary"
+            android:textColor="@color/counter_main_text"
             android:textSize="12sp" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="Mensaje"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/main_text"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
