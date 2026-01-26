@@ -14,8 +14,10 @@ import com.example.apirest.ToolbarFragment
 import CS2API.CS2ApiInstance
 import CS2API.CategoryAdapter
 import CS2API.SKINSAPI.CS2Skin
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.analytics.FirebaseAnalytics
 import retrofit2.Call
 import retrofit2.Response
 import android.view.View
@@ -26,10 +28,12 @@ class Weapons: AppCompatActivity() {
     val numOfRows : Int = 2
 
     private lateinit var progressBar: ProgressBar
-
+    private lateinit var analytics: FirebaseAnalytics
     private lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        analytics = FirebaseAnalytics.getInstance(this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_weapons)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -101,6 +105,14 @@ class Weapons: AppCompatActivity() {
     }
 
     private fun abrirListaSkins(categoria: String) {
+        val bundle = Bundle()
+
+        bundle.putString("category_name", categoria)
+
+        analytics.logEvent("select_weapon_category", bundle)
+
+        Log.d("Analytics", "Evento enviado: Categoría $categoria")
+
         val intent = Intent(this, SkinListActivity::class.java)
         intent.putExtra("CATEGORY_NAME", categoria)
         startActivity(intent)

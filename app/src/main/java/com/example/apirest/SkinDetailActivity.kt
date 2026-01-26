@@ -16,11 +16,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
 
 class SkinDetailActivity : AppCompatActivity() {
 
     // Favoritos
     private lateinit var btnFavorite: FloatingActionButton
+    private lateinit var analytics: FirebaseAnalytics
     private var isFavorite = false
     private val database = FirebaseDatabase.getInstance("https://cscompanion-ba26b-default-rtdb.europe-west1.firebasedatabase.app/").getReference("usuarios")
     private var myUserId: String = ""
@@ -34,6 +37,7 @@ class SkinDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        analytics = FirebaseAnalytics.getInstance(this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_skin_detail)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -134,6 +138,11 @@ class SkinDetailActivity : AppCompatActivity() {
     }
 
     private fun toggleFavorite() {
+        if (myUserId.isEmpty()) {
+            Toast.makeText(this, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val idSeguro = sanitizeKey(skinName)
         val ref = database.child(myUserId).child("favoritos").child(idSeguro)
 
@@ -157,6 +166,15 @@ class SkinDetailActivity : AppCompatActivity() {
                 actualizarIcono()
                 Toast.makeText(this, "Añadido a favoritos", Toast.LENGTH_SHORT).show()
                 btnFavorite.isEnabled = true
+
+                val bundle = Bundle()
+
+                bundle.putString(Param.ITEM_ID, idSeguro)
+                bundle.putString(Param.ITEM_NAME, skinName)
+                bundle.putString(Param.ITEM_CATEGORY, skinCategory)
+
+                analytics.logEvent("favorite_in_game", bundle)
+
             }.addOnFailureListener {
                 Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
                 btnFavorite.isEnabled = true
