@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#EFEFEF"
+    android:background="@color/main_background"
     tools:context=".ChatActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -37,7 +37,8 @@
             android:layout_weight="1"
             android:hint="Escribe aquí..."
             android:padding="12dp"
-            android:background="@null" />
+            android:background="@null"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btnSend"

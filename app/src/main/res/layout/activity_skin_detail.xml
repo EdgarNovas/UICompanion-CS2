@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="Categoría"
                 android:textSize="16sp"
-                android:textColor="@color/counter_main_text"
+                android:textColor="#E2E2E2"
                 android:background="@drawable/rounded_background_blue"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Descripción:"
-                android:textColor="@color/counter_main_text"
+                android:textColor="@color/main_text"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginBottom="4dp"/>
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:text="Aquí va la descripción detallada del objeto..."
                 android:textSize="16sp"
-                android:textColor="@color/counter_main_text"
+                android:textColor="@color/main_text"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginBottom="24dp"/>
 
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No disponible"
-                    android:textColor="#4CAF50"
+                    android:textColor="#AF4C4C"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
             </LinearLayout>
