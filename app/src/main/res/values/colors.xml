@@ -8,4 +8,6 @@
     <color name="main_text">#1A237E</color>
 
     <color name="counter_main_text">#FF000000</color>
+
+    <color name="category_buttom">#FF6C00</color>
 </resources>

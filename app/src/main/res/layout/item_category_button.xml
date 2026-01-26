@@ -12,10 +12,10 @@
         android:id="@+id/tvCategoryName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rounded_background_orange"
+        android:background="@color/category_buttom"
         android:gravity="center"
         android:text="CATEGORY"
-        android:textColor="@android:color/black"
+        android:textColor="@color/counter_main_text"
         android:textSize="24sp"
         android:textStyle="bold" />
 
