@@ -25,6 +25,8 @@ class ToolbarFragment : Fragment() {
     private var menuButton: ImageButton? = null
     private var settingsButton: ImageButton? = null
 
+    private val paddingRecicler : Int =30
+
     // Variables para guardar los datos si la vista aún no está lista
     private var pendingTitle: String? = null
     private var pendingClickListener: View.OnClickListener? = null
@@ -69,12 +71,12 @@ class ToolbarFragment : Fragment() {
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                // CASO 1: CLICK EN FAVORITOS
+                //  CLICK EN FAVORITOS
                 R.id.action_favorites -> {
                     mostrarDialogoFavoritos()
                     true
                 }
-                // CASO 2: CLICK EN MODO OSCURO
+                // CLICK EN MODO OSCURO
                 R.id.action_dark_mode -> {
                     val nuevoEstado = !isDarkMode
                     sharedPref.edit().putBoolean("dark_mode", nuevoEstado).apply()
@@ -93,30 +95,31 @@ class ToolbarFragment : Fragment() {
 
     //IA
     private fun mostrarDialogoFavoritos() {
-        val context = requireContext() // En fragment usamos requireContext()
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val context = requireContext()
+
+        val userId = obtenerUsuarioActual()
 
         if (userId == null) {
-            Toast.makeText(context, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Debes iniciar sesión para ver tus favoritos", Toast.LENGTH_SHORT).show()
             return
         }
 
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Mis Favoritos")
 
-        // 1. Crear Lista (RecyclerView)
+        // Crear Lista (RecyclerView)
         val recycler = RecyclerView(context)
         recycler.layoutManager = LinearLayoutManager(context)
-        recycler.setPadding(30, 30, 30, 30)
+        recycler.setPadding(paddingRecicler, paddingRecicler, paddingRecicler, paddingRecicler)
 
         val listaFavoritos = mutableListOf<FavoriteItem>()
 
-        // 2. Adaptador con borrado
+        // Adaptador con borrado
         val adapter = FavoritesAdapter(listaFavoritos) { itemABorrar ->
-            // Borrar de Firebase
+            // Borrar de Firebase usando el ID correcto
             FirebaseDatabase.getInstance(databaseUrl)
                 .getReference("usuarios")
-                .child(userId)
+                .child(userId) // Aquí ya llega "steam_123" o el ID de firebase
                 .child("favoritos")
                 .child(itemABorrar.id)
                 .removeValue()
@@ -129,7 +132,7 @@ class ToolbarFragment : Fragment() {
         recycler.adapter = adapter
         builder.setView(recycler)
 
-        // 3. Cargar datos de Firebase
+        // Cargar datos de Firebase usando el ID correcto
         val ref = FirebaseDatabase.getInstance(databaseUrl)
             .getReference("usuarios")
             .child(userId)
@@ -152,6 +155,27 @@ class ToolbarFragment : Fragment() {
 
         builder.setPositiveButton("Cerrar", null)
         builder.show()
+    }
+
+    private fun obtenerUsuarioActual(): String? {
+        // Firebase (Email)
+        val authUser = FirebaseAuth.getInstance().currentUser
+        if (authUser != null) {
+            return authUser.uid
+        }
+
+        // SharedPreferences (Steam)
+        val context = context ?: return null // Seguridad por si el fragment no tiene contexto
+        val prefs = context.getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
+        val steamId = prefs.getString("steam_id", null)
+
+        if (!steamId.isNullOrEmpty()) {
+            // Añadir el prefijo "steam_" para la base de datos
+            return "steam_$steamId"
+        }
+
+        // C. No hay nadie
+        return null
     }
 
 

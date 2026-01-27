@@ -83,7 +83,7 @@ class ChatActivity : AppCompatActivity() {
         val rootRef = FirebaseDatabase.getInstance(dbUrl).reference
 
         if (authUser != null) {
-            // --- CASO 1: LOGIN POR EMAIL (Firebase Auth) ---
+            //LOGIN POR EMAIL
             val uid = authUser.uid
             val userRef = rootRef.child("usuarios").child(uid)
 
@@ -99,12 +99,12 @@ class ChatActivity : AppCompatActivity() {
             }
 
         } else {
-            // --- CASO 2: LOGIN POR STEAM (SharedPreferences) ---
+            // LOGIN POR STEAM SharedPreferences
             val prefs = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
             val steamIdGuardado = prefs.getString("steam_id", null)
 
             if (steamIdGuardado != null) {
-                // Combinamos el ID para que coincida con la BD: "steam_12345..."
+                // Combinamos el ID para que coincida con la BD: steam_12345...
                 val userIdParaFirebase = "steam_$steamIdGuardado"
                 val userRef = rootRef.child("usuarios").child(userIdParaFirebase)
 
@@ -119,7 +119,7 @@ class ChatActivity : AppCompatActivity() {
                     currentUserName = "Error Steam"
                 }
             } else {
-                // CASO 3: NI AUTH NI STEAM
+
                 currentUserName = "Anónimo"
                 Toast.makeText(this, "No estás logueado", Toast.LENGTH_SHORT).show()
             }
