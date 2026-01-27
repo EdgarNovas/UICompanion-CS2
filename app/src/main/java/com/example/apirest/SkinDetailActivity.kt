@@ -124,7 +124,14 @@ class SkinDetailActivity : AppCompatActivity() {
         }
         // 2. Intentamos Steam
         val sharedPref = getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
-        return sharedPref.getString("steam_id", "anonimo") ?: "anonimo"
+        val steamId = sharedPref.getString("steam_id", null)
+        if (!steamId.isNullOrEmpty()) {
+            // "steam_" para que coincida con ToolbarFragment
+            return "steam_$steamId"
+        }
+
+        // 3. Si falla todo
+        return "anonimo"
     }
 
     private fun checkIfFavorite() {

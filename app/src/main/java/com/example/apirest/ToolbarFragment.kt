@@ -95,11 +95,12 @@ class ToolbarFragment : Fragment() {
 
     //IA
     private fun mostrarDialogoFavoritos() {
-        val context = requireContext() // En fragment usamos requireContext()
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val context = requireContext()
+
+        val userId = obtenerUsuarioActual()
 
         if (userId == null) {
-            Toast.makeText(context, "Debes iniciar sesión", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Debes iniciar sesión para ver tus favoritos", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -115,10 +116,10 @@ class ToolbarFragment : Fragment() {
 
         // Adaptador con borrado
         val adapter = FavoritesAdapter(listaFavoritos) { itemABorrar ->
-            // Borrar de Firebase
+            // Borrar de Firebase usando el ID correcto
             FirebaseDatabase.getInstance(databaseUrl)
                 .getReference("usuarios")
-                .child(userId)
+                .child(userId) // Aquí ya llega "steam_123" o el ID de firebase
                 .child("favoritos")
                 .child(itemABorrar.id)
                 .removeValue()
@@ -131,7 +132,7 @@ class ToolbarFragment : Fragment() {
         recycler.adapter = adapter
         builder.setView(recycler)
 
-        // Cargar datos de Firebase
+        // Cargar datos de Firebase usando el ID correcto
         val ref = FirebaseDatabase.getInstance(databaseUrl)
             .getReference("usuarios")
             .child(userId)
@@ -154,6 +155,27 @@ class ToolbarFragment : Fragment() {
 
         builder.setPositiveButton("Cerrar", null)
         builder.show()
+    }
+
+    private fun obtenerUsuarioActual(): String? {
+        // Firebase (Email)
+        val authUser = FirebaseAuth.getInstance().currentUser
+        if (authUser != null) {
+            return authUser.uid
+        }
+
+        // SharedPreferences (Steam)
+        val context = context ?: return null // Seguridad por si el fragment no tiene contexto
+        val prefs = context.getSharedPreferences("MisDatosSteam", Context.MODE_PRIVATE)
+        val steamId = prefs.getString("steam_id", null)
+
+        if (!steamId.isNullOrEmpty()) {
+            // Añadir el prefijo "steam_" para la base de datos
+            return "steam_$steamId"
+        }
+
+        // C. No hay nadie
+        return null
     }
 
 
