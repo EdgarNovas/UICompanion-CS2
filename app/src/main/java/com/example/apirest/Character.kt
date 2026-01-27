@@ -31,6 +31,8 @@ class Character: AppCompatActivity() {
     private var listaCompleta: List<CS2Agent> = emptyList()
     private lateinit var progressBar: ProgressBar
 
+    private val numColumns : Int = 2
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,7 @@ class Character: AppCompatActivity() {
         }
 
         recyclerView = findViewById(R.id.agents_recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columnas
+        recyclerView.layoutManager = GridLayoutManager(this, numColumns) // 2 columnas
         searchView = findViewById(R.id.search_view_character)
 
         progressBar = findViewById(R.id.loading_spinner)
@@ -89,10 +91,10 @@ class Character: AppCompatActivity() {
         if (!::adapter.isInitialized) return
 
         if (texto.isNullOrEmpty()) {
-            // Borró texto -> Restauramos la lista completa
+            // Borro texto -> Restauramos la lista completa
             adapter.actualizarLista(listaCompleta)
         } else {
-            // Escribió -> Filtramos sobre la lista completa
+            // Escribo -> Filtramos sobre la lista completa
             val listaFiltrada = listaCompleta.filter { agent ->
                 agent.name?.contains(texto, ignoreCase = true) == true
             }

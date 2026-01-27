@@ -27,6 +27,11 @@ class MainMenu : AppCompatActivity() {
     private lateinit var txtNombre: TextView
     private lateinit var imgAvatar: ImageView
 
+    private val sides : Int =50
+    private val top : Int =40
+    private val bottom : Int =10
+
+
     private val database = FirebaseDatabase.getInstance("https://cscompanion-ba26b-default-rtdb.europe-west1.firebasedatabase.app/")
         .getReference("usuarios")
     private var myUserId: String = ""
@@ -123,7 +128,7 @@ class MainMenu : AppCompatActivity() {
         guardarEnBaseDeDatos(nombreInicial, avatarInicial)
     }
 
-    // Esta función SOLO muestra datos visuales sin tocar la DB (Protección contra borrado)
+    // Esta función muestra datos visuales sin tocar la DB (Protección contra borrado)
     private fun mostrarDatosTemporalesOffline() {
         var nombreInicial = "Cargando..."
         val userFirebase = FirebaseAuth.getInstance().currentUser
@@ -156,13 +161,14 @@ class MainMenu : AppCompatActivity() {
     {
         startActivity(Intent(this, ChatActivity::class.java))
     }
+    //Ayudado con IA
     private fun mostrarDialogoEditar() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Editar Perfil")
 
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(50, 40, 50, 10)
+        layout.setPadding(sides, top, sides, bottom)
 
         val inputNombre = EditText(this)
         inputNombre.hint = "Nuevo Nombre"

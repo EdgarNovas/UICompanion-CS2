@@ -28,7 +28,7 @@ class Chest: AppCompatActivity() {
     private lateinit var adapter: CaseAdapter
 
     private lateinit var searchView: SearchView
-
+    private val numColumns : Int = 2
     private var listaCompleta: List<CS2Case> = emptyList()
 
     private lateinit var progressBar: ProgressBar
@@ -58,7 +58,7 @@ class Chest: AppCompatActivity() {
 
         // RecyclerView con 2 columnas
         recyclerView = findViewById(R.id.cases_recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = GridLayoutManager(this, numColumns)
         searchView = findViewById(R.id.search_view_cases)
 
         progressBar = findViewById(R.id.loading_spinner)

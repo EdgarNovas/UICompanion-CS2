@@ -14,6 +14,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 class MainActivity : AppCompatActivity() {
     private lateinit var analytics: FirebaseAnalytics
 
+    private val millisLoad : Long = 2000
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,11 +43,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             // Si no hay nadie, vamos al Login para que elija
             // Un pequeño delay para que se vea el Splash
+            //Ayudado con IA
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-            }, 2000)
+            }, millisLoad)
         }
 
 

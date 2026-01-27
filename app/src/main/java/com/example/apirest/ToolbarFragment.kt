@@ -25,6 +25,8 @@ class ToolbarFragment : Fragment() {
     private var menuButton: ImageButton? = null
     private var settingsButton: ImageButton? = null
 
+    private val paddingRecicler : Int =30
+
     // Variables para guardar los datos si la vista aún no está lista
     private var pendingTitle: String? = null
     private var pendingClickListener: View.OnClickListener? = null
@@ -69,12 +71,12 @@ class ToolbarFragment : Fragment() {
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                // CASO 1: CLICK EN FAVORITOS
+                //  CLICK EN FAVORITOS
                 R.id.action_favorites -> {
                     mostrarDialogoFavoritos()
                     true
                 }
-                // CASO 2: CLICK EN MODO OSCURO
+                // CLICK EN MODO OSCURO
                 R.id.action_dark_mode -> {
                     val nuevoEstado = !isDarkMode
                     sharedPref.edit().putBoolean("dark_mode", nuevoEstado).apply()
@@ -104,14 +106,14 @@ class ToolbarFragment : Fragment() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Mis Favoritos")
 
-        // 1. Crear Lista (RecyclerView)
+        // Crear Lista (RecyclerView)
         val recycler = RecyclerView(context)
         recycler.layoutManager = LinearLayoutManager(context)
-        recycler.setPadding(30, 30, 30, 30)
+        recycler.setPadding(paddingRecicler, paddingRecicler, paddingRecicler, paddingRecicler)
 
         val listaFavoritos = mutableListOf<FavoriteItem>()
 
-        // 2. Adaptador con borrado
+        // Adaptador con borrado
         val adapter = FavoritesAdapter(listaFavoritos) { itemABorrar ->
             // Borrar de Firebase
             FirebaseDatabase.getInstance(databaseUrl)
@@ -129,7 +131,7 @@ class ToolbarFragment : Fragment() {
         recycler.adapter = adapter
         builder.setView(recycler)
 
-        // 3. Cargar datos de Firebase
+        // Cargar datos de Firebase
         val ref = FirebaseDatabase.getInstance(databaseUrl)
             .getReference("usuarios")
             .child(userId)
