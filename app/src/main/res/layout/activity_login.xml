@@ -46,7 +46,8 @@
                 android:id="@+id/editTextTextEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="16dp"/>
@@ -64,7 +65,8 @@
                 android:id="@+id/editTextTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/black"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="24dp"/>
@@ -76,6 +78,7 @@
             android:text="Iniciar Sesión"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             app:backgroundTint="#2E3A59"
             app:cornerRadius="8dp"/>
 
@@ -121,6 +124,7 @@
             android:text="Entrar con Steam"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             app:backgroundTint="@color/black"
             app:icon="@android:drawable/ic_menu_rotate"
             app:iconGravity="textStart"

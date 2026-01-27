@@ -10,7 +10,7 @@ import com.example.apirest.R
 import com.bumptech.glide.Glide
 
 import CS2API.CS2Case
-class CaseAdapter(private val cases: List<CS2Case>) : RecyclerView.Adapter<CaseAdapter.ViewHolder>() {
+class CaseAdapter(private var cases: List<CS2Case>) : RecyclerView.Adapter<CaseAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val img: ImageView = view.findViewById(R.id.imgCase)
@@ -45,4 +45,9 @@ class CaseAdapter(private val cases: List<CS2Case>) : RecyclerView.Adapter<CaseA
     }
 
     override fun getItemCount() = cases.size
+
+    fun actualizarLista(nuevaLista: List<CS2Case>) {
+        this.cases = nuevaLista
+        notifyDataSetChanged()
+    }
 }
